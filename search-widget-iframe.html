@@ -586,7 +586,7 @@
             // Sort by distance if user location is available
             if (userLocation && filteredAddresses.length > 0) {
                 // Cache key for current location
-                const locationKey = `${userLocation.lat.toFixed(4)},${userLocation.lng.toFixed(4)}`;
+                const locationKey = `${userLocation.lat.toFixed(3)},${userLocation.lng.toFixed(3)}`;
                 
                 // Calculate distances without mutating original objects, using cache
                 const addressesWithDistance = filteredAddresses.map(addr => {
