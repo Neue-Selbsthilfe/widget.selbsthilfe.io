@@ -449,10 +449,17 @@
                     let errorMsg = 'Standort konnte nicht ermittelt werden';
                     if (error.code === error.PERMISSION_DENIED) {
                         errorMsg = 'Standortzugriff verweigert';
+                    } else if (error.code === error.TIMEOUT) {
+                        errorMsg = 'Zeitüberschreitung bei Standortermittlung';
                     }
                     info.textContent = errorMsg;
                     info.style.color = '#f44336';
                     console.error('Geolocation error:', error);
+                },
+                {
+                    timeout: 15000,
+                    enableHighAccuracy: true,
+                    maximumAge: 300000
                 }
             );
         }
@@ -496,6 +503,10 @@
                         },
                         () => {
                             // Silent fail on automatic geolocation
+                        },
+                        {
+                            timeout: 10000,
+                            enableHighAccuracy: false
                         }
                     );
                 }
@@ -581,20 +592,21 @@
             
             // Sort by distance if user location is available
             if (userLocation && filteredAddresses.length > 0) {
-                filteredAddresses.forEach(addr => {
+                // Calculate distances without mutating original objects
+                const addressesWithDistance = filteredAddresses.map(addr => {
+                    let distance = Infinity;
                     if (addr.lat && addr.lng) {
-                        addr.distance = calculateDistance(
+                        distance = calculateDistance(
                             userLocation.lat,
                             userLocation.lng,
                             addr.lat,
                             addr.lng
                         );
-                    } else {
-                        addr.distance = Infinity;
                     }
+                    return { ...addr, distance };
                 });
                 
-                filteredAddresses.sort((a, b) => a.distance - b.distance);
+                filteredAddresses = addressesWithDistance.sort((a, b) => a.distance - b.distance);
             }
             
             displayResults();
