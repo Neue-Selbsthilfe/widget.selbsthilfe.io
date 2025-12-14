@@ -437,9 +437,10 @@
             console.error('Error message:', event.message);
             console.error('Error location:', event.filename, 'line', event.lineno, 'col', event.colno);
             
-            // Show error in UI if not already showing an error
+            // Show error in UI if still loading
             const resultsContent = document.getElementById('resultsContent');
-            if (resultsContent && resultsContent.innerHTML.includes('Daten werden geladen')) {
+            if (resultsContent && isLoading) {
+                isLoading = false;
                 resultsContent.innerHTML = 
                     `<div class="no-results">
                         <strong>JavaScript-Fehler</strong><br><br>
@@ -497,6 +498,7 @@
         let currentState = '';
         let userLocation = null;
         let distanceCache = new LRUCache(MAX_CACHE_SIZE);
+        let isLoading = true; // Track loading state
         
         // Calculate distance between two points using Haversine formula
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -587,7 +589,7 @@
                 });
                 
                 if (!response.ok) {
-                    const errorDetails = `HTTP ${response.status}: ${response.statusText}`;
+                    const errorDetails = `HTTP ${response.status}: ${escapeHtml(response.statusText)}`;
                     console.error('Failed to fetch addresses:', errorDetails);
                     throw new Error(`Daten konnten nicht geladen werden (${errorDetails})`);
                 }
@@ -614,6 +616,7 @@
                 
                 if (allAddresses.length === 0) {
                     console.warn('Addresses array is empty');
+                    isLoading = false;
                     resultsContent.innerHTML = '<div class="no-results">Keine Kontaktstellen verfügbar.<br>Die Datenbank ist leer.</div>';
                     resultsCount.textContent = '0 Kontaktstellen';
                     return;
@@ -630,6 +633,7 @@
                 console.log('Displaying initial results...');
                 displayResults();
                 
+                isLoading = false;
                 console.log('Widget loaded successfully');
                 
                 // Try to get user location automatically on page load
@@ -681,6 +685,7 @@
                 
                 console.error('Technical details:', technicalDetails);
                 
+                isLoading = false;
                 resultsContent.innerHTML = 
                     `<div class="no-results">
                         <strong>Fehler beim Laden der Daten</strong><br><br>
@@ -872,8 +877,9 @@
                 
                 // Set a timeout to detect if loading takes too long
                 const loadTimeout = setTimeout(() => {
-                    if (allAddresses.length === 0) {
+                    if (isLoading && allAddresses.length === 0) {
                         console.error('Data loading timeout - no addresses loaded after 10 seconds');
+                        isLoading = false;
                         document.getElementById('resultsContent').innerHTML = 
                             `<div class="no-results">
                                 <strong>Zeitüberschreitung</strong><br><br>
@@ -885,15 +891,17 @@
                 }, 10000);
                 
                 // Load data on page load
-                loadData().then(() => {
-                    clearTimeout(loadTimeout);
-                }).catch((error) => {
-                    clearTimeout(loadTimeout);
-                    console.error('loadData promise rejected:', error);
-                });
+                loadData()
+                    .catch((error) => {
+                        console.error('loadData promise rejected:', error);
+                    })
+                    .finally(() => {
+                        clearTimeout(loadTimeout);
+                    });
             } catch (error) {
                 console.error('Critical error during widget initialization:', error);
                 console.error('Error stack:', error.stack);
+                isLoading = false;
                 document.getElementById('resultsContent').innerHTML = 
                     `<div class="no-results">
                         <strong>Initialisierungsfehler</strong><br><br>
