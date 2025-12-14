@@ -152,6 +152,113 @@
             height: 100%;
             border: none;
         }
+        
+        .embed-section {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .embed-section h2 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .embed-section p {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .code-block {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            overflow-x: auto;
+        }
+        
+        .code-block code {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+            display: block;
+            white-space: pre;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            background-color: #005fa4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            background-color: #004a82;
+        }
+        
+        .copy-btn.copied {
+            background-color: #28a745;
+        }
+        
+        .embed-options {
+            margin-top: 30px;
+        }
+        
+        .embed-options h3 {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .option-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .option-list li {
+            padding: 8px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .option-list li strong {
+            color: #333;
+        }
+        
+        .variant-heading {
+            font-size: 18px;
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+        
+        .variant-heading-secondary {
+            font-size: 18px;
+            color: #333;
+            margin-top: 35px;
+            margin-bottom: 10px;
+        }
+        
+        .variant-description {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 15px;
+        }
     </style>
 </head>
 <body>
@@ -164,11 +271,98 @@
         <button class="open-widget-btn" onclick="openWidget()">Alle Kontaktstellen anzeigen</button>
     </div>
     
+    <!-- Embed Code Section -->
+    <div class="embed-section">
+        <h2>Widget auf eigener Webseite einbinden</h2>
+        <p>
+            Sie können das Selbsthilfe-Widget ganz einfach auf Ihrer eigenen Webseite einbinden. 
+            Fügen Sie dazu einfach den folgenden Code an der gewünschten Stelle in Ihre HTML-Seite ein:
+        </p>
+        
+        <h3 class="variant-heading">Variante 1: Button mit Overlay (empfohlen)</h3>
+        <p class="variant-description">
+            Ein Button öffnet das Widget in einem Overlay über Ihrer Seite. Diese Variante ist benutzerfreundlich und benötigt wenig Platz.
+        </p>
+        <div class="code-block">
+            <button class="copy-btn" data-code-id="embed-code-1" aria-live="polite">Kopieren</button>
+            <code id="embed-code-1">&lt;!-- Selbsthilfe Widget Button --&gt;
+&lt;button id="sh-widget-btn" type="button" aria-label="Kontaktstellen finden" style="padding: 12px 30px; background-color: #005fa4; color: white; border: none; border-radius: 6px; font-size: 16px; font-weight: 500; cursor: pointer;"&gt;
+  Kontaktstellen finden
+&lt;/button&gt;
+
+&lt;!-- Widget Overlay --&gt;
+&lt;!-- Hinweis: Passen Sie ggf. den z-index-Wert an die Ebenen Ihrer Website an --&gt;
+&lt;div id="sh-widget-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center;"&gt;
+  &lt;div style="position: relative; width: 90%; max-width: 1200px; height: 90%; margin: auto; margin-top: 5vh; background: white; border-radius: 8px; overflow: hidden;"&gt;
+    &lt;button id="sh-widget-close" aria-label="Schließen" style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.9); border: none; border-radius: 50%; font-size: 24px; cursor: pointer; z-index: 10000;"&gt;&amp;times;&lt;/button&gt;
+    &lt;iframe id="sh-widget-iframe" src="https://neue-selbsthilfe.github.io/widget.selbsthilfe.io/search-widget-iframe.html" style="width: 100%; height: 100%; border: none;" title="Selbsthilfe Widget" sandbox="allow-scripts allow-same-origin allow-forms"&gt;&lt;/iframe&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+  // Accessibility: Close overlay with Escape key
+  function handleOverlayEscape(e) {
+    if (e.key === "Escape" || e.key === "Esc" || e.keyCode === 27) {
+      var overlay = document.getElementById('sh-widget-overlay');
+      if (overlay.style.display !== 'none') {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+      }
+    }
+  }
+
+  document.getElementById('sh-widget-btn').addEventListener('click', function() {
+    document.getElementById('sh-widget-overlay').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', handleOverlayEscape);
+  });
+  document.getElementById('sh-widget-close').addEventListener('click', function() {
+    document.getElementById('sh-widget-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', handleOverlayEscape);
+  });
+  document.getElementById('sh-widget-overlay').addEventListener('click', function(e) {
+    if (e.target === this) {
+      document.getElementById('sh-widget-overlay').style.display = 'none';
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleOverlayEscape);
+    }
+  });
+&lt;/script&gt;</code>
+        </div>
+        
+        <h3 class="variant-heading-secondary">Variante 2: Direkt eingebettetes iframe</h3>
+        <p class="variant-description">
+            Das Widget wird direkt auf der Seite angezeigt. Passen Sie Breite und Höhe nach Bedarf an.
+        </p>
+        <div class="code-block">
+            <button class="copy-btn" data-code-id="embed-code-2" aria-live="polite">Kopieren</button>
+            <code id="embed-code-2">&lt;!-- Selbsthilfe Widget iframe --&gt;
+&lt;iframe 
+  src="https://neue-selbsthilfe.github.io/widget.selbsthilfe.io/search-widget-iframe.html" 
+  width="100%" 
+  height="800" 
+  style="border: 1px solid #ddd; border-radius: 8px;"
+  title="Selbsthilfe-Kontaktstellen Widget"
+  sandbox="allow-scripts allow-same-origin allow-forms"&gt;
+&lt;/iframe&gt;</code>
+        </div>
+        
+        <div class="embed-options">
+            <h3>Anpassungsmöglichkeiten</h3>
+            <ul class="option-list">
+                <li><strong>Breite und Höhe:</strong> Passen Sie die <code>width</code> und <code>height</code> Attribute nach Ihren Bedürfnissen an.</li>
+                <li><strong>Button-Styling:</strong> Ändern Sie die CSS-Styles des Buttons, um ihn an Ihr Design anzupassen.</li>
+                <li><strong>Responsive:</strong> Das Widget passt sich automatisch an verschiedene Bildschirmgrößen an.</li>
+            </ul>
+        </div>
+    </div>
+    
     <!-- Overlay with iframe -->
     <div id="widgetOverlay" class="overlay" onclick="closeWidget(event)">
         <div class="overlay-content" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="closeWidget()" aria-label="Schließen">&times;</button>
-            <iframe id="widgetIframe" class="widget-iframe" src="" title="Selbsthilfe Widget"></iframe>
+            <iframe id="widgetIframe" class="widget-iframe" src="" title="Selbsthilfe Widget" sandbox="allow-scripts allow-same-origin allow-forms"></iframe>
         </div>
     </div>
     
@@ -212,6 +406,73 @@
                     closeWidget();
                 }
             }
+        });
+        
+        // Copy embed code to clipboard
+        function copyCode(button, codeId) {
+            const codeElement = document.getElementById(codeId);
+            const textToCopy = codeElement.textContent;
+            
+            // Try modern Clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        // Visual feedback
+                        const originalText = button.textContent;
+                        button.textContent = 'Kopiert!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.textContent = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy with Clipboard API:', err);
+                        fallbackCopy(textToCopy, button);
+                    });
+            } else {
+                // Fallback for older browsers
+                fallbackCopy(textToCopy, button);
+            }
+        }
+        
+        // Fallback copy method for older browsers
+        function fallbackCopy(text, button) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            
+            textarea.select();
+            textarea.setSelectionRange(0, 99999);
+            
+            try {
+                document.execCommand('copy');
+                
+                const originalText = button.textContent;
+                button.textContent = 'Kopiert!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy:', err);
+                alert('Fehler beim Kopieren. Bitte manuell kopieren.');
+            }
+            
+            document.body.removeChild(textarea);
+        }
+        
+        // Add event listeners to copy buttons
+        document.querySelectorAll('.copy-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const codeId = this.getAttribute('data-code-id');
+                copyCode(this, codeId);
+            });
         });
     </script>
 </body>
