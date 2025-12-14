@@ -385,11 +385,40 @@
     </div>
     
     <script>
+        // Simple LRU Cache implementation
+        class LRUCache {
+            constructor(limit) {
+                this.limit = limit;
+                this.cache = new Map();
+            }
+            get(key) {
+                if (!this.cache.has(key)) return undefined;
+                const value = this.cache.get(key);
+                // Move key to the end to show that it was recently used
+                this.cache.delete(key);
+                this.cache.set(key, value);
+                return value;
+            }
+            set(key, value) {
+                if (this.cache.has(key)) {
+                    this.cache.delete(key);
+                } else if (this.cache.size >= this.limit) {
+                    // Remove least recently used (first) key
+                    const firstKey = this.cache.keys().next().value;
+                    this.cache.delete(firstKey);
+                }
+                this.cache.set(key, value);
+            }
+            has(key) {
+                return this.cache.has(key);
+            }
+        }
+        const MAX_CACHE_SIZE = 200;
         let allAddresses = [];
         let filteredAddresses = [];
         let currentState = '';
         let userLocation = null;
-        let distanceCache = new Map();
+        let distanceCache = new LRUCache(MAX_CACHE_SIZE);
         
         // Escape HTML to prevent XSS attacks
         function escapeHtml(text) {
