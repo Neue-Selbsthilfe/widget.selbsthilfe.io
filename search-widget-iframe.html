@@ -661,12 +661,12 @@
                 let userMessage = '';
                 let technicalDetails = '';
                 
-                if (error.message) {
-                    userMessage = error.message;
-                    technicalDetails = error.message;
-                } else if (error instanceof TypeError) {
+                if (error instanceof TypeError) {
                     userMessage = 'Netzwerkfehler: Daten konnten nicht geladen werden';
                     technicalDetails = 'Network error or CORS issue';
+                } else if (error.message) {
+                    userMessage = error.message;
+                    technicalDetails = error.message;
                 } else {
                     userMessage = 'Ein unbekannter Fehler ist aufgetreten';
                     technicalDetails = 'Unknown error type';
@@ -866,8 +866,8 @@
                 
                 // Set a timeout to detect if loading takes too long
                 const loadTimeout = setTimeout(() => {
-                    if (isLoading && (!allAddresses || allAddresses.length === 0)) {
-                        console.error('Data loading timeout - no addresses loaded after 10 seconds');
+                    if (isLoading) {
+                        console.error('Data loading timeout - loading still in progress after 10 seconds');
                         isLoading = false;
                         document.getElementById('resultsContent').innerHTML = 
                             `<div class="no-results">
