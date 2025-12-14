@@ -1,50 +1,59 @@
-# widget.selbsthilfe.io
+# Selbsthilfe-Kontaktstellen-Widget
 
-Ein Widget, um die passende Selbsthilfe-Kontaktstelle in der eigenen Region zu finden.
+**Finden Sie schnell und einfach die passende Selbsthilfe-Kontaktstelle in Ihrer Region!**
 
-## Übersicht
+## Was ist das Selbsthilfe-Widget?
 
-Dieses Projekt stellt ein durchsuchbares Widget für Selbsthilfe-Kontaktstellen in Deutschland bereit. Das Widget wird als statische GitHub Pages-Seite gehostet und folgt dem Muster des [map.selbsthilfe.io](https://github.com/Neue-Selbsthilfe/map.selbsthilfe.io) Projekts.
+Das Selbsthilfe-Widget ist ein kostenloses Such-Tool, mit dem Sie bundesweit Selbsthilfe-Kontaktstellen in Ihrer Nähe finden können. Selbsthilfe-Kontaktstellen unterstützen Menschen dabei, die richtige Selbsthilfegruppe für ihre Situation zu finden und können bei der Gründung neuer Gruppen helfen.
 
-## Funktionen
+## Wie nutze ich das Widget?
 
-- **Suchfunktion**: Suche nach Name, Stadt oder Postleitzahl
-- **Filteroptionen**: Filterung nach Bundesland und Stadt
-- **Responsive Design**: Optimiert für Desktop und mobile Geräte
-- **Overlay-Ansicht**: Das Widget öffnet sich in einem Overlay mit iframe
-- **Automatische Datenaktualisierung**: Täglicher Import von der Selbsthilfe-Labor API
+### Online nutzen
 
-## Dateien
+Besuchen Sie einfach unsere Website: **[widget.selbsthilfe.io](https://widget.selbsthilfe.io)**
 
-- `index.html` - Hauptseite mit Button zum Öffnen des Widgets
-- `search-widget-iframe.html` - Das eigentliche Widget mit Such- und Filterfunktionen
-- `data/` - JSON-Datenquellen (Kontaktstellen, Bundesländer, Postleitzahlen)
-- `.github/workflows/fetch-data.yml` - Täglicher Workflow zum Abrufen von API-Daten
-- `.github/workflows/deploy-pages.yml` - Deployment-Workflow für GitHub Pages
+Dort können Sie:
+- 📍 **Nach Standort suchen**: Geben Sie Ihre Stadt oder Postleitzahl ein
+- 🔍 **Gezielt filtern**: Wählen Sie Ihr Bundesland aus
+- 📱 **Auf jedem Gerät nutzen**: Das Widget funktioniert auf Computer, Tablet und Smartphone
+- 📞 **Kontaktdaten finden**: Erhalten Sie direkt alle wichtigen Kontaktinformationen
 
-## Datenquelle
+### Auf Ihrer eigenen Webseite einbinden
 
-Die Daten werden täglich um 2:00 Uhr UTC von der [selbsthilfe-labor.de](https://selbsthilfe-labor.de) API abgerufen und transformiert. Der Workflow benötigt ein `API_TOKEN` Secret für den Zugriff auf die API.
+Betreiben Sie eine Webseite für Selbsthilfe, Gesundheit oder soziale Dienste? Sie können das Widget kostenlos auf Ihrer eigenen Webseite einbinden! 
 
-## Lokale Entwicklung
+Besuchen Sie [widget.selbsthilfe.io](https://widget.selbsthilfe.io) und folgen Sie der Anleitung unter "Widget auf eigener Webseite einbinden". Mit nur wenigen Zeilen Code können Sie Ihren Besuchern den Zugang zu allen Selbsthilfe-Kontaktstellen in Deutschland ermöglichen.
 
-```bash
-# Repository klonen
-git clone https://github.com/Neue-Selbsthilfe/widget.selbsthilfe.io.git
-cd widget.selbsthilfe.io
+## Was sind Selbsthilfe-Kontaktstellen?
 
-# Lokalen Server starten (Python 3)
-python3 -m http.server 8000
+Selbsthilfe-Kontaktstellen sind Anlaufstellen für Menschen, die:
+- Eine Selbsthilfegruppe zu einem bestimmten Thema suchen
+- Eine neue Selbsthilfegruppe gründen möchten
+- Informationen über Selbsthilfe benötigen
+- Unterstützung bei der Organisation von Selbsthilfegruppen brauchen
 
-# Im Browser öffnen: http://localhost:8000
-```
+Die Kontaktstellen bieten neutrale, kostenlose Beratung und vermitteln zwischen Hilfesuchenden und passenden Selbsthilfegruppen.
 
-## Deployment
+## Funktionen des Widgets
 
-Das Projekt wird automatisch auf GitHub Pages deployed, wenn Änderungen auf den `main` Branch gepusht werden.
+- ✅ **Aktuelle Daten**: Die Datenbank wird täglich automatisch aktualisiert
+- ✅ **Einfache Suche**: Nach Name, Stadt oder Postleitzahl suchen
+- ✅ **Flexible Filter**: Nach Bundesland und Stadt filtern
+- ✅ **Vollständige Kontaktinformationen**: Adresse, Telefon, E-Mail und Website
+- ✅ **Benutzerfreundlich**: Übersichtliche Darstellung auf allen Geräten
 
-## Sicherheit
+## Über dieses Projekt
 
-- XSS-Schutz durch HTML-Escaping aller dynamischen Inhalte
-- Validierung aller JSON-Daten vor dem Commit
-- Sichere API-Token-Verwaltung über GitHub Secrets
+Dieses Widget ist Teil der Initiative [Neue Selbsthilfe](https://github.com/Neue-Selbsthilfe) und wird als Open-Source-Projekt entwickelt. Die Daten stammen von [selbsthilfe-labor.de](https://selbsthilfe-labor.de) und werden täglich aktualisiert, um Ihnen stets die aktuellsten Informationen zu bieten.
+
+## Kontakt und Weitere Informationen
+
+- 🌐 Website: [widget.selbsthilfe.io](https://widget.selbsthilfe.io)
+- 💻 GitHub: [github.com/Neue-Selbsthilfe/widget.selbsthilfe.io](https://github.com/Neue-Selbsthilfe/widget.selbsthilfe.io)
+- 📚 Weitere Projekte: [github.com/Neue-Selbsthilfe](https://github.com/Neue-Selbsthilfe)
+
+---
+
+## Für Entwickler
+
+Technische Dokumentation für Entwickler finden Sie in der Datei [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
