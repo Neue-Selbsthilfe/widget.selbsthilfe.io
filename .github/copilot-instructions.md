@@ -74,7 +74,7 @@ All data files are in `data/` directory:
   - Note: `contact` and `mail` contain the same value (email address)
   - These duplications exist for compatibility with different naming conventions
 - `states.json` - Array of German states (Bundesländer) with fields: id, name, seo_title, coordinates (empty array)
-- `postal-codes.json` - Array of postal codes with cities
+- `postal-codes.json` - Array of postal codes with fields: id, postalCode, zip, city, coordinates (array, usually empty)
 
 ### Data Updates
 
