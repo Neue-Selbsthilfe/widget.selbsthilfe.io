@@ -362,7 +362,7 @@
                     >
                     <!-- State dropdown for desktop (next to search) -->
                     <select class="state-dropdown-desktop" id="stateDropdownDesktop">
-                        <option value="">Bundesland wählen</option>
+                        <option value="">Alle Bundesländer</option>
                     </select>
                     <button class="geolocation-btn" id="geolocationBtn" title="Standort verwenden">
                         📍 Standort
@@ -389,6 +389,7 @@
         let filteredAddresses = [];
         let currentState = '';
         let userLocation = null;
+        let distanceCache = new Map();
         
         // Escape HTML to prevent XSS attacks
         function escapeHtml(text) {
@@ -473,16 +474,8 @@
                 }
                 allAddresses = await response.json();
                 
-                // Load states for filter
-                try {
-                    const statesResponse = await fetch('data/states.json');
-                    if (statesResponse.ok) {
-                        const states = await statesResponse.json();
-                        populateStateFilters(states);
-                    }
-                } catch (e) {
-                    console.log('States data not available');
-                }
+                // Populate state filters from addresses
+                populateStateFilters();
                 
                 // Initial display - show all when nothing is selected
                 filteredAddresses = [...allAddresses];
@@ -520,7 +513,7 @@
         }
         
         // Populate state filters (sidebar, mobile dropdown, desktop dropdown)
-        function populateStateFilters(states) {
+        function populateStateFilters() {
             const stateList = document.getElementById('stateList');
             const stateDropdownMobile = document.getElementById('stateDropdownMobile');
             const stateDropdownDesktop = document.getElementById('stateDropdownDesktop');
@@ -592,16 +585,26 @@
             
             // Sort by distance if user location is available
             if (userLocation && filteredAddresses.length > 0) {
-                // Calculate distances without mutating original objects
+                // Cache key for current location
+                const locationKey = `${userLocation.lat.toFixed(4)},${userLocation.lng.toFixed(4)}`;
+                
+                // Calculate distances without mutating original objects, using cache
                 const addressesWithDistance = filteredAddresses.map(addr => {
                     let distance = Infinity;
                     if (addr.lat && addr.lng) {
-                        distance = calculateDistance(
-                            userLocation.lat,
-                            userLocation.lng,
-                            addr.lat,
-                            addr.lng
-                        );
+                        const cacheKey = `${locationKey}:${addr.id}`;
+                        
+                        if (distanceCache.has(cacheKey)) {
+                            distance = distanceCache.get(cacheKey);
+                        } else {
+                            distance = calculateDistance(
+                                userLocation.lat,
+                                userLocation.lng,
+                                addr.lat,
+                                addr.lng
+                            );
+                            distanceCache.set(cacheKey, distance);
+                        }
                     }
                     return { ...addr, distance };
                 });
