@@ -423,6 +423,51 @@
     </div>
     
     <script>
+        // Initialize loading state early so it's available in error handlers
+        let isLoading = true;
+        
+        // Escape HTML to prevent XSS attacks - defined first so it's available everywhere
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Global error handler to catch unhandled errors
+        window.addEventListener('error', function(event) {
+            console.error('Unhandled error:', event.error);
+            console.error('Error message:', event.message);
+            console.error('Error location:', event.filename, 'line', event.lineno, 'col', event.colno);
+            
+            // Show error in UI if still loading
+            const resultsContent = document.getElementById('resultsContent');
+            if (resultsContent && isLoading) {
+                isLoading = false;
+                resultsContent.innerHTML = 
+                    `<div class="no-results">
+                        <strong>JavaScript-Fehler</strong><br><br>
+                        Es ist ein technischer Fehler im Skript aufgetreten.<br>
+                        Dies ist kein Datenladefehler.<br>
+                        Bitte laden Sie die Seite neu.<br><br>
+                        <small style="color: #999;">
+                            Fehler: ${escapeHtml(event.message)}<br>
+                            Details in der Browser-Konsole (F12).
+                        </small>
+                    </div>`;
+                const resultsCount = document.getElementById('resultsCount');
+                if (resultsCount) {
+                    resultsCount.textContent = 'JavaScript-Fehler';
+                }
+            }
+        });
+        
+        // Global promise rejection handler
+        window.addEventListener('unhandledrejection', function(event) {
+            console.error('Unhandled promise rejection:', event.reason);
+            console.error('Promise:', event.promise);
+        });
+        
         // Simple LRU Cache implementation
         class LRUCache {
             constructor(limit) {
@@ -457,14 +502,6 @@
         let currentState = '';
         let userLocation = null;
         let distanceCache = new LRUCache(MAX_CACHE_SIZE);
-        
-        // Escape HTML to prevent XSS attacks
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
         
         // Calculate distance between two points using Haversine formula
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -535,49 +572,119 @@
         
         // Load data from JSON files
         async function loadData() {
+            console.log('Widget initialization started');
+            console.log('Current URL:', window.location.href);
+            console.log('Attempting to load data from: data/addresses.json');
+            
+            const resultsContent = document.getElementById('resultsContent');
+            const resultsCount = document.getElementById('resultsCount');
+            
             try {
+                // Fetch addresses data
+                console.log('Fetching addresses data...');
                 const response = await fetch('data/addresses.json');
+                
+                console.log('Fetch response status:', response.status, response.ok ? 'OK' : 'Failed');
+                
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    const errorDetails = `HTTP ${response.status}: ${response.statusText}`;
+                    console.error('Failed to fetch addresses:', errorDetails);
+                    throw new Error(`Daten konnten nicht geladen werden (${errorDetails})`);
                 }
+                
+                // Parse JSON data
+                console.log('Parsing JSON data...');
                 allAddresses = await response.json();
+                console.log('JSON parsed successfully. Total addresses:', allAddresses.length);
+                
+                // Validate data structure
+                if (!Array.isArray(allAddresses)) {
+                    console.error('Invalid data structure: expected array, got', typeof allAddresses);
+                    throw new Error('Datenstruktur ist ungültig (kein Array)');
+                }
+                
+                if (allAddresses.length === 0) {
+                    console.warn('Addresses array is empty');
+                    isLoading = false;
+                    resultsContent.innerHTML = '<div class="no-results">Keine Kontaktstellen verfügbar.<br>Die Datenbank ist leer.</div>';
+                    resultsCount.textContent = '0 Kontaktstellen';
+                    return;
+                }
+                
+                console.log('Sample address:', allAddresses[0]);
                 
                 // Populate state filters from addresses
+                console.log('Populating state filters...');
                 populateStateFilters();
                 
                 // Initial display - show all when nothing is selected
                 filteredAddresses = [...allAddresses];
+                console.log('Displaying initial results...');
                 displayResults();
+                
+                isLoading = false;
+                console.log('Widget loaded successfully');
                 
                 // Try to get user location automatically on page load
                 // Uses lower accuracy and shorter timeout for non-intrusive background positioning
                 if (navigator.geolocation) {
+                    console.log('Attempting automatic geolocation...');
                     navigator.geolocation.getCurrentPosition(
                         (position) => {
                             userLocation = {
                                 lat: position.coords.latitude,
                                 lng: position.coords.longitude
                             };
+                            console.log('Geolocation successful:', userLocation);
                             document.getElementById('geolocationInfo').textContent = 
                                 'Standort ermittelt - Ergebnisse nach Entfernung sortiert';
                             document.getElementById('geolocationInfo').style.color = '#d21e28';
                             filterResults();
                         },
-                        () => {
+                        (geoError) => {
                             // Silent fail on automatic geolocation - don't interrupt user experience
+                            console.log('Automatic geolocation failed (this is normal):', geoError.message);
                         },
                         {
                             timeout: 10000,           // 10s timeout - faster for background operation
                             enableHighAccuracy: false // Low accuracy - faster, less battery drain
                         }
                     );
+                } else {
+                    console.log('Geolocation not supported by browser');
                 }
             } catch (error) {
                 console.error('Error loading data:', error);
-                const errorMessage = error.message || 'Unbekannter Fehler';
-                document.getElementById('resultsContent').innerHTML = 
-                    `<div class="no-results">Fehler beim Laden der Daten: ${escapeHtml(errorMessage)}<br>Bitte versuchen Sie es später erneut.</div>`;
-                document.getElementById('resultsCount').textContent = 'Fehler beim Laden';
+                console.error('Error stack:', error.stack);
+                
+                // Determine error type for better user feedback
+                let userMessage = '';
+                let technicalDetails = '';
+                
+                if (error instanceof TypeError) {
+                    userMessage = 'Netzwerkfehler: Daten konnten nicht geladen werden';
+                    technicalDetails = 'Network error or CORS issue';
+                } else if (error.message) {
+                    userMessage = error.message;
+                    technicalDetails = error.message;
+                } else {
+                    userMessage = 'Ein unbekannter Fehler ist aufgetreten';
+                    technicalDetails = 'Unknown error type';
+                }
+                
+                console.error('Technical details:', technicalDetails);
+                
+                isLoading = false;
+                resultsContent.innerHTML = 
+                    `<div class="no-results">
+                        <strong>Fehler beim Laden der Daten</strong><br><br>
+                        ${escapeHtml(userMessage)}<br><br>
+                        <small style="color: #999;">
+                            Bitte versuchen Sie es später erneut oder kontaktieren Sie den Support.<br>
+                            Technische Details finden Sie in der Browser-Konsole (F12).
+                        </small>
+                    </div>`;
+                resultsCount.textContent = 'Fehler beim Laden';
             }
         }
         
@@ -737,21 +844,70 @@
                 `</div>`;
         }
         
-        // Event listeners
-        document.getElementById('searchInput').addEventListener('input', filterResults);
+        // Initialize widget
+        function initializeWidget() {
+            try {
+                console.log('Setting up event listeners...');
+                
+                // Event listeners
+                document.getElementById('searchInput').addEventListener('input', filterResults);
+                
+                document.getElementById('stateDropdownMobile').addEventListener('change', (e) => {
+                    selectState(e.target.value);
+                });
+                
+                document.getElementById('stateDropdownDesktop').addEventListener('change', (e) => {
+                    selectState(e.target.value);
+                });
+                
+                document.getElementById('geolocationBtn').addEventListener('click', getUserLocation);
+                
+                console.log('Event listeners set up successfully');
+                
+                // Set a timeout to detect if loading takes too long
+                const loadTimeout = setTimeout(() => {
+                    if (isLoading) {
+                        console.error('Data loading timeout - loading still in progress after 10 seconds');
+                        isLoading = false;
+                        document.getElementById('resultsContent').innerHTML = 
+                            `<div class="no-results">
+                                <strong>Zeitüberschreitung</strong><br><br>
+                                Die Daten konnten nicht rechtzeitig geladen werden.<br>
+                                Bitte überprüfen Sie Ihre Internetverbindung und laden Sie die Seite neu.
+                            </div>`;
+                        document.getElementById('resultsCount').textContent = 'Zeitüberschreitung';
+                    }
+                }, 10000);
+                
+                // Load data on page load
+                loadData()
+                    .finally(() => {
+                        clearTimeout(loadTimeout);
+                    });
+            } catch (error) {
+                console.error('Critical error during widget initialization:', error);
+                console.error('Error stack:', error.stack);
+                isLoading = false;
+                document.getElementById('resultsContent').innerHTML = 
+                    `<div class="no-results">
+                        <strong>Initialisierungsfehler</strong><br><br>
+                        Das Widget konnte nicht gestartet werden.<br>
+                        Bitte laden Sie die Seite neu.<br><br>
+                        <small style="color: #999;">
+                            Technische Details in der Browser-Konsole (F12).
+                        </small>
+                    </div>`;
+                document.getElementById('resultsCount').textContent = 'Initialisierungsfehler';
+            }
+        }
         
-        document.getElementById('stateDropdownMobile').addEventListener('change', (e) => {
-            selectState(e.target.value);
-        });
-        
-        document.getElementById('stateDropdownDesktop').addEventListener('change', (e) => {
-            selectState(e.target.value);
-        });
-        
-        document.getElementById('geolocationBtn').addEventListener('click', getUserLocation);
-        
-        // Load data on page load
-        loadData();
+        // Start initialization when DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeWidget);
+        } else {
+            // DOM is already ready
+            initializeWidget();
+        }
     </script>
 </body>
 </html>
