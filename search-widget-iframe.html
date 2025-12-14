@@ -594,17 +594,8 @@
                 
                 // Parse JSON data
                 console.log('Parsing JSON data...');
-                const rawText = await response.text();
-                console.log('Raw response length:', rawText.length, 'characters');
-                
-                try {
-                    allAddresses = JSON.parse(rawText);
-                    console.log('JSON parsed successfully. Total addresses:', allAddresses.length);
-                } catch (jsonError) {
-                    console.error('JSON parsing error:', jsonError);
-                    console.error('Response text sample:', rawText.substring(0, 200));
-                    throw new Error('Datenformat ist ungültig (JSON-Parsing-Fehler)');
-                }
+                allAddresses = await response.json();
+                console.log('JSON parsed successfully. Total addresses:', allAddresses.length);
                 
                 // Validate data structure
                 if (!Array.isArray(allAddresses)) {
