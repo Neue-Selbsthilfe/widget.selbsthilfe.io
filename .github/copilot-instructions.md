@@ -83,7 +83,7 @@ Data is automatically updated via `.github/workflows/fetch-data.yml`:
 - Runs daily at 2:00 AM UTC (cron: `0 2 * * *`)
 - Fetches from three selbsthilfe-labor.de API endpoints:
   - `/rest/sh/kontaktstelle/1.0.0/` - Contact points (paginated, all pages fetched)
-  - `/rest/sh/zip/1.0.0/` - Postal codes (first 100 items)
+  - `/rest/sh/zip/1.0.0/` - Postal codes (first page, up to 100 items; only the first page is fetched, so not all postal codes are included if there are more than 100)
   - `/rest/sh/state/1.0.0/` - States (all ~16 German Bundesländer)
 - Uses `API_TOKEN` secret for authentication
 - Transforms JSON:API format to simplified format
