@@ -103,7 +103,6 @@ Data is automatically updated via `.github/workflows/fetch-data.yml`:
 ### Fetch API Data
 
 `.github/workflows/fetch-data.yml`:
-- Scheduled daily at 2:00 AM UTC (cron: `0 2 * * *`)
 - Manual trigger available via workflow_dispatch
 - Requires `API_TOKEN` secret for API access
 - Fetches from multiple API endpoints (kontaktstelle, zip, state)
