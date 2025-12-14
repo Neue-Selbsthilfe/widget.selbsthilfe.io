@@ -14,17 +14,69 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: #f9f9f9;
-            padding: 20px;
+            overflow-x: hidden;
         }
         
         .widget-container {
-            max-width: 1200px;
+            display: flex;
+            height: 100vh;
+            max-width: 1400px;
             margin: 0 auto;
         }
         
+        /* Left Sidebar - State Selection (Desktop only) */
+        .state-sidebar {
+            width: 250px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            display: none;
+        }
+        
+        .state-sidebar h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            padding: 20px 15px 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .state-list {
+            list-style: none;
+        }
+        
+        .state-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid #f5f5f5;
+            transition: background-color 0.2s ease;
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .state-item:hover {
+            background-color: #f5f5f5;
+        }
+        
+        .state-item.active {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            font-weight: 600;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
         .header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
             text-align: center;
-            margin-bottom: 30px;
         }
         
         .header h1 {
@@ -41,13 +93,31 @@
         .search-box {
             background: white;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        /* State dropdown for mobile */
+        .state-dropdown-mobile {
+            display: none;
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+            margin-bottom: 15px;
+        }
+        
+        .search-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
         
         .search-input {
-            width: 100%;
+            flex: 1;
             padding: 12px 15px;
             font-size: 16px;
             border: 1px solid #ddd;
@@ -60,29 +130,47 @@
             border-color: #2196F3;
         }
         
-        .filters {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .filter-select {
-            flex: 1;
+        /* State dropdown for desktop (next to search) */
+        .state-dropdown-desktop {
             min-width: 200px;
-            padding: 10px 15px;
+            padding: 12px 15px;
             font-size: 14px;
             border: 1px solid #ddd;
             border-radius: 6px;
             background-color: white;
             cursor: pointer;
             outline: none;
+            display: none;
+        }
+        
+        .geolocation-btn {
+            padding: 12px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
+        }
+        
+        .geolocation-btn:hover {
+            background-color: #45a049;
+        }
+        
+        .geolocation-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .results-area {
+            flex: 1;
+            overflow-y: auto;
+            background: #f9f9f9;
         }
         
         .results-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             padding: 20px;
         }
         
@@ -91,8 +179,6 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
         }
         
         .results-count {
@@ -100,104 +186,200 @@
             color: #666;
         }
         
-        .result-item {
+        .geolocation-info {
+            font-size: 12px;
+            color: #4CAF50;
+            font-style: italic;
+        }
+        
+        /* Card layout for results */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .result-card {
+            background: white;
+            border-radius: 8px;
             padding: 15px;
-            border-bottom: 1px solid #f0f0f0;
-            transition: background-color 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
         }
         
-        .result-item:last-child {
-            border-bottom: none;
+        .result-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
         
-        .result-item:hover {
-            background-color: #f9f9f9;
-        }
-        
-        .result-name {
-            font-size: 18px;
+        .result-region {
+            font-size: 16px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
-        .result-address {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        
-        .result-contact {
-            font-size: 14px;
-            color: #2196F3;
-            margin-top: 8px;
-        }
-        
-        .result-contact a {
+        .result-link {
             color: #2196F3;
             text-decoration: none;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
         }
         
-        .result-contact a:hover {
+        .result-link:hover {
             text-decoration: underline;
+        }
+        
+        .result-details {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .result-distance {
+            font-size: 12px;
+            color: #4CAF50;
+            margin-top: 5px;
+            font-weight: 500;
         }
         
         .loading {
             text-align: center;
-            padding: 40px;
+            padding: 60px 20px;
             color: #666;
         }
         
         .no-results {
             text-align: center;
-            padding: 40px;
+            padding: 60px 20px;
             color: #666;
+            font-size: 16px;
         }
         
-        .badge {
-            display: inline-block;
-            padding: 4px 10px;
-            background-color: #e3f2fd;
-            color: #1976d2;
-            border-radius: 4px;
-            font-size: 12px;
-            margin-right: 8px;
-            margin-top: 5px;
+        /* Mobile Responsive Design */
+        @media (max-width: 768px) {
+            .widget-container {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+            
+            .state-sidebar {
+                display: none !important;
+            }
+            
+            .state-dropdown-mobile {
+                display: block;
+            }
+            
+            .state-dropdown-desktop {
+                display: none !important;
+            }
+            
+            .search-controls {
+                flex-direction: column;
+            }
+            
+            .geolocation-btn {
+                width: 100%;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .header p {
+                font-size: 13px;
+            }
+        }
+        
+        /* Desktop Responsive Design */
+        @media (min-width: 769px) {
+            .state-sidebar {
+                display: block;
+            }
+            
+            .state-dropdown-desktop {
+                display: block;
+            }
+        }
+        
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .state-sidebar {
+                width: 200px;
+            }
+            
+            .results-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
     <div class="widget-container">
-        <div class="header">
-            <h1>Selbsthilfe-Kontaktstellen in Deutschland</h1>
-            <p>Finden Sie die passende Kontaktstelle in Ihrer Region</p>
+        <!-- Left Sidebar: State Selection (Desktop) -->
+        <div class="state-sidebar">
+            <h2>Bundesländer</h2>
+            <ul class="state-list" id="stateList">
+                <li class="state-item active" data-state="">Alle Bundesländer</li>
+            </ul>
         </div>
         
-        <div class="search-box">
-            <input 
-                type="text" 
-                class="search-input" 
-                id="searchInput" 
-                placeholder="Suche nach Name, Stadt oder Postleitzahl..."
-                autocomplete="off"
-            >
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Selbsthilfe-Kontaktstellen in Deutschland</h1>
+                <p>Finden Sie die passende Kontaktstelle in Ihrer Region</p>
+            </div>
             
-            <div class="filters">
-                <select class="filter-select" id="stateFilter">
+            <div class="search-box">
+                <!-- State dropdown for mobile (above search) -->
+                <select class="state-dropdown-mobile" id="stateDropdownMobile">
                     <option value="">Alle Bundesländer</option>
                 </select>
-                <select class="filter-select" id="cityFilter">
-                    <option value="">Alle Städte</option>
-                </select>
+                
+                <div class="search-controls">
+                    <input 
+                        type="text" 
+                        class="search-input" 
+                        id="searchInput" 
+                        placeholder="PLZ oder Ort eingeben..."
+                        autocomplete="off"
+                    >
+                    <!-- State dropdown for desktop (next to search) -->
+                    <select class="state-dropdown-desktop" id="stateDropdownDesktop">
+                        <option value="">Bundesland wählen</option>
+                    </select>
+                    <button class="geolocation-btn" id="geolocationBtn" title="Standort verwenden">
+                        📍 Standort
+                    </button>
+                </div>
             </div>
-        </div>
-        
-        <div class="results-container">
-            <div class="results-header">
-                <div class="results-count" id="resultsCount">Lade Daten...</div>
-            </div>
-            <div id="resultsContent" class="loading">
-                Daten werden geladen...
+            
+            <div class="results-area">
+                <div class="results-container">
+                    <div class="results-header">
+                        <div class="results-count" id="resultsCount">Lade Daten...</div>
+                        <div class="geolocation-info" id="geolocationInfo"></div>
+                    </div>
+                    <div id="resultsContent" class="loading">
+                        Daten werden geladen...
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -205,6 +387,8 @@
     <script>
         let allAddresses = [];
         let filteredAddresses = [];
+        let currentState = '';
+        let userLocation = null;
         
         // Escape HTML to prevent XSS attacks
         function escapeHtml(text) {
@@ -212,6 +396,65 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+        
+        // Calculate distance between two points using Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the Earth in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            const distance = R * c;
+            return distance;
+        }
+        
+        // Get user's geolocation
+        function getUserLocation() {
+            const btn = document.getElementById('geolocationBtn');
+            const info = document.getElementById('geolocationInfo');
+            
+            if (!navigator.geolocation) {
+                info.textContent = 'Geolokation wird nicht unterstützt';
+                info.style.color = '#f44336';
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.textContent = '📍 Lädt...';
+            info.textContent = 'Standort wird ermittelt...';
+            info.style.color = '#666';
+            
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    userLocation = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    
+                    btn.disabled = false;
+                    btn.textContent = '📍 Standort';
+                    info.textContent = 'Standort ermittelt - Ergebnisse nach Entfernung sortiert';
+                    info.style.color = '#4CAF50';
+                    
+                    // Sort results by distance
+                    filterResults();
+                },
+                (error) => {
+                    btn.disabled = false;
+                    btn.textContent = '📍 Standort';
+                    let errorMsg = 'Standort konnte nicht ermittelt werden';
+                    if (error.code === error.PERMISSION_DENIED) {
+                        errorMsg = 'Standortzugriff verweigert';
+                    }
+                    info.textContent = errorMsg;
+                    info.style.color = '#f44336';
+                    console.error('Geolocation error:', error);
+                }
+            );
         }
         
         // Load data from JSON files
@@ -228,16 +471,34 @@
                     const statesResponse = await fetch('data/states.json');
                     if (statesResponse.ok) {
                         const states = await statesResponse.json();
-                        populateStateFilter(states);
+                        populateStateFilters(states);
                     }
                 } catch (e) {
                     console.log('States data not available');
                 }
                 
-                // Initial display
+                // Initial display - show all when nothing is selected
                 filteredAddresses = [...allAddresses];
-                updateCityFilter();
                 displayResults();
+                
+                // Try to get user location automatically
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(
+                        (position) => {
+                            userLocation = {
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            };
+                            document.getElementById('geolocationInfo').textContent = 
+                                'Standort ermittelt - Ergebnisse nach Entfernung sortiert';
+                            document.getElementById('geolocationInfo').style.color = '#4CAF50';
+                            filterResults();
+                        },
+                        () => {
+                            // Silent fail on automatic geolocation
+                        }
+                    );
+                }
             } catch (error) {
                 console.error('Error loading data:', error);
                 const errorMessage = error.message || 'Unbekannter Fehler';
@@ -247,52 +508,62 @@
             }
         }
         
-        // Populate state filter
-        function populateStateFilter(states) {
-            const stateFilter = document.getElementById('stateFilter');
+        // Populate state filters (sidebar, mobile dropdown, desktop dropdown)
+        function populateStateFilters(states) {
+            const stateList = document.getElementById('stateList');
+            const stateDropdownMobile = document.getElementById('stateDropdownMobile');
+            const stateDropdownDesktop = document.getElementById('stateDropdownDesktop');
             
             // Get unique states from addresses
             const addressStates = [...new Set(allAddresses.map(addr => addr.state).filter(s => s))];
             addressStates.sort();
             
             addressStates.forEach(state => {
-                const option = document.createElement('option');
-                option.value = state;
-                option.textContent = state;
-                stateFilter.appendChild(option);
+                // Add to sidebar list
+                const li = document.createElement('li');
+                li.className = 'state-item';
+                li.textContent = state;
+                li.dataset.state = state;
+                li.addEventListener('click', () => selectState(state));
+                stateList.appendChild(li);
+                
+                // Add to mobile dropdown
+                const optionMobile = document.createElement('option');
+                optionMobile.value = state;
+                optionMobile.textContent = state;
+                stateDropdownMobile.appendChild(optionMobile);
+                
+                // Add to desktop dropdown
+                const optionDesktop = document.createElement('option');
+                optionDesktop.value = state;
+                optionDesktop.textContent = state;
+                stateDropdownDesktop.appendChild(optionDesktop);
             });
         }
         
-        // Update city filter based on current filtered addresses
-        function updateCityFilter() {
-            const cityFilter = document.getElementById('cityFilter');
-            const currentCity = cityFilter.value;
+        // Select a state
+        function selectState(state) {
+            currentState = state;
             
-            // Clear existing options except first
-            cityFilter.innerHTML = '<option value="">Alle Städte</option>';
-            
-            // Get unique cities from current filtered addresses
-            const cities = [...new Set(filteredAddresses.map(addr => addr.city).filter(c => c))];
-            cities.sort();
-            
-            cities.forEach(city => {
-                const option = document.createElement('option');
-                option.value = city;
-                option.textContent = city;
-                cityFilter.appendChild(option);
+            // Update sidebar active state
+            document.querySelectorAll('.state-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.state === state) {
+                    item.classList.add('active');
+                }
             });
             
-            // Restore selection if still valid
-            if (currentCity && cities.includes(currentCity)) {
-                cityFilter.value = currentCity;
-            }
+            // Update dropdowns
+            document.getElementById('stateDropdownMobile').value = state;
+            document.getElementById('stateDropdownDesktop').value = state;
+            
+            // Filter results
+            filterResults();
         }
         
         // Filter and display results
         function filterResults() {
             const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
-            const stateFilter = document.getElementById('stateFilter').value;
-            const cityFilter = document.getElementById('cityFilter').value;
             
             filteredAddresses = allAddresses.filter(addr => {
                 // Search text filter
@@ -303,18 +574,33 @@
                     (addr.postalCode && addr.postalCode.includes(searchText));
                 
                 // State filter
-                const matchesState = !stateFilter || addr.state === stateFilter;
+                const matchesState = !currentState || addr.state === currentState;
                 
-                // City filter
-                const matchesCity = !cityFilter || addr.city === cityFilter;
-                
-                return matchesSearch && matchesState && matchesCity;
+                return matchesSearch && matchesState;
             });
+            
+            // Sort by distance if user location is available
+            if (userLocation && filteredAddresses.length > 0) {
+                filteredAddresses.forEach(addr => {
+                    if (addr.lat && addr.lng) {
+                        addr.distance = calculateDistance(
+                            userLocation.lat,
+                            userLocation.lng,
+                            addr.lat,
+                            addr.lng
+                        );
+                    } else {
+                        addr.distance = Infinity;
+                    }
+                });
+                
+                filteredAddresses.sort((a, b) => a.distance - b.distance);
+            }
             
             displayResults();
         }
         
-        // Display results
+        // Display results as cards
         function displayResults() {
             const resultsContent = document.getElementById('resultsContent');
             const resultsCount = document.getElementById('resultsCount');
@@ -322,55 +608,59 @@
             resultsCount.textContent = `${filteredAddresses.length} ${filteredAddresses.length === 1 ? 'Kontaktstelle' : 'Kontaktstellen'} gefunden`;
             
             if (filteredAddresses.length === 0) {
-                resultsContent.innerHTML = '<div class="no-results">Keine Kontaktstellen gefunden. Bitte passen Sie Ihre Suche an.</div>';
+                resultsContent.innerHTML = '<div class="no-results">Keine Kontaktstellen gefunden.<br>Bitte wählen Sie ein Bundesland oder ändern Sie Ihre Suche.</div>';
                 return;
             }
             
-            resultsContent.innerHTML = filteredAddresses.map(addr => {
-                let html = `<div class="result-item">`;
-                html += `<div class="result-name">${escapeHtml(addr.name)}</div>`;
-                
-                if (addr.street || addr.city) {
-                    html += `<div class="result-address">`;
-                    if (addr.street) html += escapeHtml(addr.street);
-                    if (addr.street && addr.city) html += ', ';
-                    if (addr.city) html += escapeHtml(addr.city);
-                    html += `</div>`;
-                }
-                
-                if (addr.state) {
-                    html += `<span class="badge">${escapeHtml(addr.state)}</span>`;
-                }
-                
-                if (addr.phone || addr.mail || addr.url) {
-                    html += `<div class="result-contact">`;
-                    if (addr.phone) {
-                        html += `<div>📞 ${escapeHtml(addr.phone)}</div>`;
-                    }
-                    if (addr.mail) {
-                        html += `<div>✉️ <a href="mailto:${escapeHtml(addr.mail)}">${escapeHtml(addr.mail)}</a></div>`;
-                    }
+            resultsContent.innerHTML = `<div class="results-grid">` + 
+                filteredAddresses.map(addr => {
+                    // Determine region text: City or State
+                    const region = addr.city || addr.state || 'Region unbekannt';
+                    
+                    let html = `<div class="result-card">`;
+                    html += `<div class="result-region">${escapeHtml(region)}</div>`;
+                    
                     if (addr.url) {
-                        html += `<div>🌐 <a href="${escapeHtml(addr.url)}" target="_blank" rel="noopener noreferrer">Website</a></div>`;
+                        html += `<a href="${escapeHtml(addr.url)}" target="_blank" rel="noopener noreferrer" class="result-link">${escapeHtml(addr.url)}</a>`;
+                    }
+                    
+                    // Show distance if available
+                    if (addr.distance !== undefined && addr.distance !== Infinity) {
+                        html += `<div class="result-distance">📍 ${Math.round(addr.distance)} km entfernt</div>`;
+                    }
+                    
+                    // Additional details (collapsible)
+                    html += `<div class="result-details">`;
+                    if (addr.name) {
+                        html += `<div><strong>${escapeHtml(addr.name)}</strong></div>`;
+                    }
+                    if (addr.street || addr.postalCode) {
+                        html += `<div>`;
+                        if (addr.street) html += escapeHtml(addr.street);
+                        if (addr.street && addr.postalCode) html += ', ';
+                        if (addr.postalCode) html += escapeHtml(addr.postalCode);
+                        html += `</div>`;
                     }
                     html += `</div>`;
-                }
-                
-                html += `</div>`;
-                return html;
-            }).join('');
+                    
+                    html += `</div>`;
+                    return html;
+                }).join('') + 
+                `</div>`;
         }
         
         // Event listeners
         document.getElementById('searchInput').addEventListener('input', filterResults);
-        document.getElementById('stateFilter').addEventListener('change', () => {
-            // Reset city filter when state changes
-            document.getElementById('cityFilter').value = '';
-            // Update city filter options and re-filter results
-            filterResults();
-            updateCityFilter();
+        
+        document.getElementById('stateDropdownMobile').addEventListener('change', (e) => {
+            selectState(e.target.value);
         });
-        document.getElementById('cityFilter').addEventListener('change', filterResults);
+        
+        document.getElementById('stateDropdownDesktop').addEventListener('change', (e) => {
+            selectState(e.target.value);
+        });
+        
+        document.getElementById('geolocationBtn').addEventListener('click', getUserLocation);
         
         // Load data on page load
         loadData();
