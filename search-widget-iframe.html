@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selbsthilfe-Kontaktstellen Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        
+        .widget-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .search-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #2196F3;
+        }
+        
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-select {
+            flex: 1;
+            min-width: 200px;
+            padding: 10px 15px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .results-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        
+        .results-count {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .result-item {
+            padding: 15px;
+            border-bottom: 1px solid #f0f0f0;
+            transition: background-color 0.2s ease;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-item:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .result-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .result-address {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .result-contact {
+            font-size: 14px;
+            color: #2196F3;
+            margin-top: 8px;
+        }
+        
+        .result-contact a {
+            color: #2196F3;
+            text-decoration: none;
+        }
+        
+        .result-contact a:hover {
+            text-decoration: underline;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 8px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget-container">
+        <div class="header">
+            <h1>Selbsthilfe-Kontaktstellen in Deutschland</h1>
+            <p>Finden Sie die passende Kontaktstelle in Ihrer Region</p>
+        </div>
+        
+        <div class="search-box">
+            <input 
+                type="text" 
+                class="search-input" 
+                id="searchInput" 
+                placeholder="Suche nach Name, Stadt oder Postleitzahl..."
+                autocomplete="off"
+            >
+            
+            <div class="filters">
+                <select class="filter-select" id="stateFilter">
+                    <option value="">Alle Bundesländer</option>
+                </select>
+                <select class="filter-select" id="cityFilter">
+                    <option value="">Alle Städte</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="results-container">
+            <div class="results-header">
+                <div class="results-count" id="resultsCount">Lade Daten...</div>
+            </div>
+            <div id="resultsContent" class="loading">
+                Daten werden geladen...
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let allAddresses = [];
+        let filteredAddresses = [];
+        
+        // Escape HTML to prevent XSS attacks
+        function escapeHtml(text) {
+            if (!text) return '';
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        // Load data from JSON files
+        async function loadData() {
+            try {
+                const response = await fetch('data/addresses.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                allAddresses = await response.json();
+                
+                // Load states for filter
+                try {
+                    const statesResponse = await fetch('data/states.json');
+                    if (statesResponse.ok) {
+                        const states = await statesResponse.json();
+                        populateStateFilter(states);
+                    }
+                } catch (e) {
+                    console.log('States data not available');
+                }
+                
+                // Initial display
+                filteredAddresses = [...allAddresses];
+                updateCityFilter();
+                displayResults();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('resultsContent').innerHTML = 
+                    '<div class="no-results">Fehler beim Laden der Daten. Bitte versuchen Sie es später erneut.</div>';
+                document.getElementById('resultsCount').textContent = 'Fehler';
+            }
+        }
+        
+        // Populate state filter
+        function populateStateFilter(states) {
+            const stateFilter = document.getElementById('stateFilter');
+            
+            // Get unique states from addresses
+            const addressStates = [...new Set(allAddresses.map(addr => addr.state).filter(s => s))];
+            addressStates.sort();
+            
+            addressStates.forEach(state => {
+                const option = document.createElement('option');
+                option.value = state;
+                option.textContent = state;
+                stateFilter.appendChild(option);
+            });
+        }
+        
+        // Update city filter based on current filtered addresses
+        function updateCityFilter() {
+            const cityFilter = document.getElementById('cityFilter');
+            const currentCity = cityFilter.value;
+            
+            // Clear existing options except first
+            cityFilter.innerHTML = '<option value="">Alle Städte</option>';
+            
+            // Get unique cities from current filtered addresses
+            const cities = [...new Set(filteredAddresses.map(addr => addr.city).filter(c => c))];
+            cities.sort();
+            
+            cities.forEach(city => {
+                const option = document.createElement('option');
+                option.value = city;
+                option.textContent = city;
+                cityFilter.appendChild(option);
+            });
+            
+            // Restore selection if still valid
+            if (currentCity && cities.includes(currentCity)) {
+                cityFilter.value = currentCity;
+            }
+        }
+        
+        // Filter and display results
+        function filterResults() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase().trim();
+            const stateFilter = document.getElementById('stateFilter').value;
+            const cityFilter = document.getElementById('cityFilter').value;
+            
+            filteredAddresses = allAddresses.filter(addr => {
+                // Search text filter
+                const matchesSearch = !searchText || 
+                    (addr.name && addr.name.toLowerCase().includes(searchText)) ||
+                    (addr.city && addr.city.toLowerCase().includes(searchText)) ||
+                    (addr.street && addr.street.toLowerCase().includes(searchText)) ||
+                    (addr.postalCode && addr.postalCode.includes(searchText));
+                
+                // State filter
+                const matchesState = !stateFilter || addr.state === stateFilter;
+                
+                // City filter
+                const matchesCity = !cityFilter || addr.city === cityFilter;
+                
+                return matchesSearch && matchesState && matchesCity;
+            });
+            
+            displayResults();
+        }
+        
+        // Display results
+        function displayResults() {
+            const resultsContent = document.getElementById('resultsContent');
+            const resultsCount = document.getElementById('resultsCount');
+            
+            resultsCount.textContent = `${filteredAddresses.length} ${filteredAddresses.length === 1 ? 'Kontaktstelle' : 'Kontaktstellen'} gefunden`;
+            
+            if (filteredAddresses.length === 0) {
+                resultsContent.innerHTML = '<div class="no-results">Keine Kontaktstellen gefunden. Bitte passen Sie Ihre Suche an.</div>';
+                return;
+            }
+            
+            resultsContent.innerHTML = filteredAddresses.map(addr => {
+                let html = `<div class="result-item">`;
+                html += `<div class="result-name">${escapeHtml(addr.name)}</div>`;
+                
+                if (addr.street || addr.city) {
+                    html += `<div class="result-address">`;
+                    if (addr.street) html += escapeHtml(addr.street);
+                    if (addr.street && addr.city) html += ', ';
+                    if (addr.city) html += escapeHtml(addr.city);
+                    html += `</div>`;
+                }
+                
+                if (addr.state) {
+                    html += `<span class="badge">${escapeHtml(addr.state)}</span>`;
+                }
+                
+                if (addr.phone || addr.mail || addr.url) {
+                    html += `<div class="result-contact">`;
+                    if (addr.phone) {
+                        html += `<div>📞 ${escapeHtml(addr.phone)}</div>`;
+                    }
+                    if (addr.mail) {
+                        html += `<div>✉️ <a href="mailto:${escapeHtml(addr.mail)}">${escapeHtml(addr.mail)}</a></div>`;
+                    }
+                    if (addr.url) {
+                        html += `<div>🌐 <a href="${escapeHtml(addr.url)}" target="_blank" rel="noopener noreferrer">Website</a></div>`;
+                    }
+                    html += `</div>`;
+                }
+                
+                html += `</div>`;
+                return html;
+            }).join('');
+        }
+        
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', filterResults);
+        document.getElementById('stateFilter').addEventListener('change', () => {
+            // When state changes, update available cities
+            const stateFilter = document.getElementById('stateFilter').value;
+            const baseFiltered = allAddresses.filter(addr => !stateFilter || addr.state === stateFilter);
+            filteredAddresses = baseFiltered;
+            updateCityFilter();
+            filterResults();
+        });
+        document.getElementById('cityFilter').addEventListener('change', filterResults);
+        
+        // Load data on page load
+        loadData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+[
+  {
+    "id": 1,
+    "postalCode": "01129",
+    "zip": "01129",
+    "city": "Dresden",
+    "coordinates": []
+  },
+  {
+    "id": 2,
+    "postalCode": "01796",
+    "zip": "01796",
+    "city": "Pirna",
+    "coordinates": []
+  },
+  {
+    "id": 3,
+    "postalCode": "01979",
+    "zip": "01979",
+    "city": "Lauchhammer",
+    "coordinates": []
+  },
+  {
+    "id": 4,
+    "postalCode": "10625",
+    "zip": "10625",
+    "city": "Berlin",
+    "coordinates": []
+  },
+  {
+    "id": 5,
+    "postalCode": "80339",
+    "zip": "80339",
+    "city": "München",
+    "coordinates": []
+  }
+]
