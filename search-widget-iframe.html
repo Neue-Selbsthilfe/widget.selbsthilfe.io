@@ -423,6 +423,9 @@
     </div>
     
     <script>
+        // Initialize loading state early so it's available in error handlers
+        let isLoading = true;
+        
         // Escape HTML to prevent XSS attacks - defined first so it's available everywhere
         function escapeHtml(text) {
             if (!text) return '';
@@ -498,7 +501,6 @@
         let currentState = '';
         let userLocation = null;
         let distanceCache = new LRUCache(MAX_CACHE_SIZE);
-        let isLoading = true; // Track loading state
         
         // Calculate distance between two points using Haversine formula
         function calculateDistance(lat1, lon1, lat2, lon2) {
@@ -877,7 +879,7 @@
                 
                 // Set a timeout to detect if loading takes too long
                 const loadTimeout = setTimeout(() => {
-                    if (isLoading && allAddresses.length === 0) {
+                    if (isLoading && (!allAddresses || allAddresses.length === 0)) {
                         console.error('Data loading timeout - no addresses loaded after 10 seconds');
                         isLoading = false;
                         document.getElementById('resultsContent').innerHTML = 
@@ -894,6 +896,26 @@
                 loadData()
                     .catch((error) => {
                         console.error('loadData promise rejected:', error);
+                        // Ensure loading state is set to false if error wasn't caught inside loadData
+                        if (isLoading) {
+                            isLoading = false;
+                            const resultsContent = document.getElementById('resultsContent');
+                            const resultsCount = document.getElementById('resultsCount');
+                            if (resultsContent) {
+                                resultsContent.innerHTML = 
+                                    `<div class="no-results">
+                                        <strong>Unerwarteter Fehler</strong><br><br>
+                                        Ein unerwarteter Fehler ist aufgetreten.<br>
+                                        Bitte laden Sie die Seite neu.<br><br>
+                                        <small style="color: #999;">
+                                            Details in der Browser-Konsole (F12).
+                                        </small>
+                                    </div>`;
+                            }
+                            if (resultsCount) {
+                                resultsCount.textContent = 'Unerwarteter Fehler';
+                            }
+                        }
                     })
                     .finally(() => {
                         clearTimeout(loadTimeout);
