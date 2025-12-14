@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Baden-Württemberg",
+    "seo_title": "Selbsthilfe in Baden-Württemberg",
+    "coordinates": []
+  },
+  {
+    "id": 2,
+    "name": "Bayern",
+    "seo_title": "Selbsthilfe in Bayern",
+    "coordinates": []
+  },
+  {
+    "id": 3,
+    "name": "Berlin",
+    "seo_title": "Selbsthilfe in Berlin",
+    "coordinates": []
+  },
+  {
+    "id": 4,
+    "name": "Brandenburg",
+    "seo_title": "Selbsthilfe in Brandenburg",
+    "coordinates": []
+  },
+  {
+    "id": 5,
+    "name": "Bremen",
+    "seo_title": "Selbsthilfe in Bremen",
+    "coordinates": []
+  },
+  {
+    "id": 6,
+    "name": "Hamburg",
+    "seo_title": "Selbsthilfe in Hamburg",
+    "coordinates": []
+  },
+  {
+    "id": 7,
+    "name": "Hessen",
+    "seo_title": "Selbsthilfe in Hessen",
+    "coordinates": []
+  },
+  {
+    "id": 8,
+    "name": "Mecklenburg-Vorpommern",
+    "seo_title": "Selbsthilfe in Mecklenburg-Vorpommern",
+    "coordinates": []
+  },
+  {
+    "id": 9,
+    "name": "Niedersachsen",
+    "seo_title": "Selbsthilfe in Niedersachsen",
+    "coordinates": []
+  },
+  {
+    "id": 10,
+    "name": "Nordrhein-Westfalen",
+    "seo_title": "Selbsthilfe in Nordrhein-Westfalen",
+    "coordinates": []
+  },
+  {
+    "id": 11,
+    "name": "Rheinland-Pfalz",
+    "seo_title": "Selbsthilfe in Rheinland-Pfalz",
+    "coordinates": []
+  },
+  {
+    "id": 12,
+    "name": "Saarland",
+    "seo_title": "Selbsthilfe in Saarland",
+    "coordinates": []
+  },
+  {
+    "id": 13,
+    "name": "Sachsen",
+    "seo_title": "Selbsthilfe in Sachsen",
+    "coordinates": []
+  },
+  {
+    "id": 14,
+    "name": "Sachsen-Anhalt",
+    "seo_title": "Selbsthilfe in Sachsen-Anhalt",
+    "coordinates": []
+  },
+  {
+    "id": 15,
+    "name": "Schleswig-Holstein",
+    "seo_title": "Selbsthilfe in Schleswig-Holstein",
+    "coordinates": []
+  },
+  {
+    "id": 16,
+    "name": "Thüringen",
+    "seo_title": "Selbsthilfe in Thüringen",
+    "coordinates": []
+  }
+]

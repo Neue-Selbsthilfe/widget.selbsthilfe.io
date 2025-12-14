@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selbsthilfe Widget</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .open-widget-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: #2196F3;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        
+        .open-widget-btn:hover {
+            background-color: #1976D2;
+        }
+        
+        /* Overlay styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9999;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .overlay-content {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            margin: auto;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            line-height: 1;
+            cursor: pointer;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+            transition: background-color 0.2s ease;
+        }
+        
+        .close-btn:hover {
+            background-color: white;
+        }
+        
+        .widget-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Selbsthilfe-Kontaktstellen finden</h1>
+        <p>
+            Finden Sie die passende Selbsthilfe-Kontaktstelle in Ihrer Region. 
+            Klicken Sie auf den Button, um das Such-Widget zu öffnen.
+        </p>
+        <button class="open-widget-btn" onclick="openWidget()">Alle Kontaktstellen anzeigen</button>
+    </div>
+    
+    <!-- Overlay with iframe -->
+    <div id="widgetOverlay" class="overlay" onclick="closeWidget(event)">
+        <div class="overlay-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeWidget()" aria-label="Schließen">&times;</button>
+            <iframe id="widgetIframe" class="widget-iframe" src="" title="Selbsthilfe Widget"></iframe>
+        </div>
+    </div>
+    
+    <script>
+        function openWidget() {
+            const overlay = document.getElementById('widgetOverlay');
+            const iframe = document.getElementById('widgetIframe');
+            
+            // Set iframe source only when opening
+            if (!iframe.src) {
+                iframe.src = 'search-widget-iframe.html';
+            }
+            
+            overlay.style.display = 'flex';
+            // Trigger animation
+            setTimeout(() => {
+                overlay.classList.add('active');
+            }, 10);
+            
+            // Prevent body scrolling when overlay is open
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeWidget(event) {
+            const overlay = document.getElementById('widgetOverlay');
+            
+            overlay.classList.remove('active');
+            
+            // Wait for animation to finish before hiding
+            setTimeout(() => {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            }, 300);
+        }
+        
+        // Close overlay on Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const overlay = document.getElementById('widgetOverlay');
+                if (overlay.classList.contains('active')) {
+                    closeWidget();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

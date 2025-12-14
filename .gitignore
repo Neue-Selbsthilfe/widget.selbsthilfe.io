@@ -1,0 +1,34 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.bak
+*.log
+
+# Node modules (if needed in the future)
+node_modules/
+package-lock.json
+
+# Build artifacts
+dist/
+build/
+
+# Environment files with secrets
+.env
+.env.local
+*.key
+*.pem
+
+# API tokens and secrets (should never be committed)
+*secret*
+*token*
+!.github/workflows/*.yml

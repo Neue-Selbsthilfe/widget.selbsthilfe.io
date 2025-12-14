@@ -1,0 +1,310 @@
+name: Fetch API Data
+
+on:
+  schedule:
+    # Runs daily at 2:00 AM UTC
+    - cron: '0 2 * * *'
+  workflow_dispatch: # Allows manual triggering
+
+permissions:
+  contents: write
+
+jobs:
+  fetch-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Create data transformation script
+        run: |
+          cat > transform-data.js << 'EOF'
+          const fs = require('fs');
+          
+          // Transform Kontaktstelle (addresses) data from JSON:API format to simple format
+          function transformKontaktstelle(jsonApiData) {
+            if (!jsonApiData.data || !Array.isArray(jsonApiData.data)) {
+              return [];
+            }
+            
+            return jsonApiData.data.map(item => {
+              const attrs = item.attributes || {};
+              return {
+                id: item.id,
+                name: attrs.name || '',
+                street: attrs.street || '',
+                address: attrs.street || '',
+                city: attrs.city || '',
+                postalCode: '', // Will be derived from zip_ids if needed
+                state: attrs.state || '',
+                lat: attrs.number_lat || 0,
+                lng: attrs.number_lng || 0,
+                phone: attrs.phone || '',
+                contact: attrs.mail || '',
+                mail: attrs.mail || '',
+                url: attrs.url || '',
+                description: attrs.seo_title || attrs.name || ''
+              };
+            });
+          }
+          
+          // Transform State (Bundesland) data
+          function transformStates(jsonApiData) {
+            if (!jsonApiData.data || !Array.isArray(jsonApiData.data)) {
+              return [];
+            }
+            
+            return jsonApiData.data.map(item => {
+              const attrs = item.attributes || {};
+              return {
+                id: item.id,
+                name: attrs.name || '',
+                seo_title: attrs.seo_title || '',
+                coordinates: [] // Boundary coordinates not provided by API
+              };
+            });
+          }
+          
+          // Transform Zip (PLZ) data
+          function transformZips(jsonApiData) {
+            if (!jsonApiData.data || !Array.isArray(jsonApiData.data)) {
+              return [];
+            }
+            
+            return jsonApiData.data.map(item => {
+              const attrs = item.attributes || {};
+              return {
+                id: item.id,
+                postalCode: attrs.zip || '',
+                zip: attrs.zip || '',
+                city: attrs.city || '',
+                coordinates: [] // Boundary coordinates not provided by API
+              };
+            });
+          }
+          
+          // Main execution
+          const args = process.argv.slice(2);
+          if (args.length < 3) {
+            console.error('Usage: node transform-data.js <type> <input-file> <output-file>');
+            process.exit(1);
+          }
+          
+          const [type, inputFile, outputFile] = args;
+          
+          try {
+            const rawData = fs.readFileSync(inputFile, 'utf8');
+            const jsonApiData = JSON.parse(rawData);
+            
+            let transformed;
+            switch (type) {
+              case 'kontaktstelle':
+                transformed = transformKontaktstelle(jsonApiData);
+                break;
+              case 'state':
+                transformed = transformStates(jsonApiData);
+                break;
+              case 'zip':
+                transformed = transformZips(jsonApiData);
+                break;
+              default:
+                console.error('Unknown type:', type);
+                process.exit(1);
+            }
+            
+            fs.writeFileSync(outputFile, JSON.stringify(transformed, null, 2));
+            console.log(`Transformed ${transformed.length} items from ${inputFile} to ${outputFile}`);
+          } catch (error) {
+            console.error('Error transforming data:', error.message);
+            process.exit(1);
+          }
+          EOF
+      
+      - name: Fetch and transform Kontaktstelle data
+        id: fetch-kontaktstelle
+        continue-on-error: true
+        env:
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+        run: |
+          # Fetch all pages of Kontaktstelle data from API
+          BASE_URL="https://selbsthilfe-labor.de/rest/sh/kontaktstelle/1.0.0/"
+          
+          if [ -n "$API_TOKEN" ]; then
+            echo "Fetching all pages of Kontaktstelle data from: $BASE_URL"
+            
+            mkdir -p data
+            rm -f data/addresses-raw-page*.json
+            
+            PAGE=1
+            PER_PAGE=100
+            TOTAL_FETCHED=0
+            while true; do
+              OUTFILE="data/addresses-raw-page${PAGE}.json"
+              echo "Fetching page $PAGE..."
+              if ! curl -f -H "Authorization: Bearer $API_TOKEN" \
+                    -H "Accept: application/json" \
+                    -o "$OUTFILE" \
+                    "${BASE_URL}?per_page=${PER_PAGE}&page=${PAGE}"; then
+                echo "✗ Failed to fetch page $PAGE of Kontaktstelle data from API"
+                rm -f "$OUTFILE"
+                break
+              fi
+              COUNT=$(jq '.data | length' "$OUTFILE")
+              if [ "$COUNT" -eq 0 ]; then
+                rm -f "$OUTFILE"
+                break
+              fi
+              TOTAL_FETCHED=$((TOTAL_FETCHED + COUNT))
+              if [ "$COUNT" -lt "$PER_PAGE" ]; then
+                # Last page
+                break
+              fi
+              PAGE=$((PAGE + 1))
+            done
+            
+            # Merge all pages into one file
+            echo "Merging fetched pages..."
+            jq -s '{data: [.[].data] | add}' data/addresses-raw-page*.json > data/addresses-raw.json
+            
+            # Transform the data
+            if node transform-data.js kontaktstelle data/addresses-raw.json data/addresses.json; then
+              echo "✓ Kontaktstelle data fetched and transformed successfully"
+              echo "success=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "✗ Failed to transform Kontaktstelle data"
+              echo "success=false" >> "$GITHUB_OUTPUT"
+            fi
+            rm -f data/addresses-raw-page*.json data/addresses-raw.json
+          else
+            echo "⚠ API_TOKEN is not set. Skipping Kontaktstelle fetch."
+            echo "success=false" >> "$GITHUB_OUTPUT"
+          fi
+      
+      - name: Fetch and transform Zip data
+        id: fetch-zip
+        continue-on-error: true
+        env:
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+        run: |
+          # Fetch Zip (PLZ) data from API
+          BASE_URL="https://selbsthilfe-labor.de/rest/sh/zip/1.0.0/"
+          
+          if [ -n "$API_TOKEN" ]; then
+            echo "Fetching Zip data from: $BASE_URL"
+            
+            # Fetch first page (100 items)
+            if curl -f -H "Authorization: Bearer $API_TOKEN" \
+                    -H "Accept: application/json" \
+                    -o data/postal-codes-raw.json \
+                    "${BASE_URL}?per_page=100&page=1"; then
+              
+              # Transform the data
+              if node transform-data.js zip data/postal-codes-raw.json data/postal-codes.json; then
+                echo "✓ Zip data fetched and transformed successfully"
+                echo "success=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "✗ Failed to transform Zip data"
+                echo "success=false" >> "$GITHUB_OUTPUT"
+              fi
+              rm -f data/postal-codes-raw.json
+            else
+              echo "✗ Failed to fetch Zip data from API"
+              echo "success=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "⚠ API_TOKEN is not set. Skipping Zip fetch."
+            echo "success=false" >> "$GITHUB_OUTPUT"
+          fi
+      
+      - name: Fetch and transform State data
+        id: fetch-state
+        continue-on-error: true
+        env:
+          API_TOKEN: ${{ secrets.API_TOKEN }}
+        run: |
+          # Fetch State (Bundesland) data from API
+          BASE_URL="https://selbsthilfe-labor.de/rest/sh/state/1.0.0/"
+          
+          if [ -n "$API_TOKEN" ]; then
+            echo "Fetching State data from: $BASE_URL"
+            
+            # Fetch all states (should be ~16 items)
+            if curl -f -g -H "Authorization: Bearer $API_TOKEN" \
+                    -H "Accept: application/json" \
+                    -o data/states-raw.json \
+                    "${BASE_URL}?order[name]=asc"; then
+              
+              # Transform the data
+              if node transform-data.js state data/states-raw.json data/states.json; then
+                echo "✓ State data fetched and transformed successfully"
+                echo "success=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "✗ Failed to transform State data"
+                echo "success=false" >> "$GITHUB_OUTPUT"
+              fi
+              rm -f data/states-raw.json
+            else
+              echo "✗ Failed to fetch State data from API"
+              echo "success=false" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "⚠ API_TOKEN is not set. Skipping State fetch."
+            echo "success=false" >> "$GITHUB_OUTPUT"
+          fi
+      
+      - name: Check for changes and verify data integrity
+        id: git-check
+        run: |
+          # Check if at least one fetch was successful
+          KONTAKTSTELLE_SUCCESS="${{ steps.fetch-kontaktstelle.outputs.success }}"
+          ZIP_SUCCESS="${{ steps.fetch-zip.outputs.success }}"
+          STATE_SUCCESS="${{ steps.fetch-state.outputs.success }}"
+          
+          echo "Fetch results:"
+          echo "  Kontaktstelle: $KONTAKTSTELLE_SUCCESS"
+          echo "  Zip: $ZIP_SUCCESS"
+          echo "  State: $STATE_SUCCESS"
+          
+          # Check if at least one fetch succeeded
+          if [ "$KONTAKTSTELLE_SUCCESS" != "true" ] && [ "$ZIP_SUCCESS" != "true" ] && [ "$STATE_SUCCESS" != "true" ]; then
+            echo "⚠ No successful data fetches. Skipping commit."
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          
+          # Check if there are actual changes in the data directory
+          if [ -n "$(git status --porcelain data/)" ]; then
+            echo "✓ Changes detected in data files"
+            
+            # Verify that expected files exist and are valid JSON
+            for file in data/addresses.json data/postal-codes.json data/states.json; do
+              if [ -f "$file" ]; then
+                if ! jq empty "$file" 2>/dev/null; then
+                  echo "✗ Invalid JSON in $file"
+                  echo "changes=false" >> "$GITHUB_OUTPUT"
+                  exit 0
+                fi
+              fi
+            done
+            
+            echo "changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No changes in data files"
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+          fi
+      
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changes == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/*.json
+          git commit -m "Update API data - $(date +'%Y-%m-%d %H:%M:%S')"
+          git push
