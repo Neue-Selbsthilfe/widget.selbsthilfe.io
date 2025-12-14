@@ -584,12 +584,7 @@
                 console.log('Fetching addresses data...');
                 const response = await fetch('data/addresses.json');
                 
-                console.log('Fetch response received:', {
-                    status: response.status,
-                    statusText: response.statusText,
-                    ok: response.ok,
-                    url: response.url
-                });
+                console.log('Fetch response status:', response.status, response.ok ? 'OK' : 'Failed');
                 
                 if (!response.ok) {
                     const errorDetails = `HTTP ${response.status}: ${escapeHtml(response.statusText)}`;
