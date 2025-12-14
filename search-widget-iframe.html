@@ -895,29 +895,6 @@
                 
                 // Load data on page load
                 loadData()
-                    .catch((error) => {
-                        console.error('loadData promise rejected:', error);
-                        // Ensure loading state is set to false if error wasn't caught inside loadData
-                        if (isLoading) {
-                            isLoading = false;
-                            const resultsContent = document.getElementById('resultsContent');
-                            const resultsCount = document.getElementById('resultsCount');
-                            if (resultsContent) {
-                                resultsContent.innerHTML = 
-                                    `<div class="no-results">
-                                        <strong>Unerwarteter Fehler</strong><br><br>
-                                        Ein unerwarteter Fehler ist aufgetreten.<br>
-                                        Bitte laden Sie die Seite neu.<br><br>
-                                        <small style="color: #999;">
-                                            Details in der Browser-Konsole (F12).
-                                        </small>
-                                    </div>`;
-                            }
-                            if (resultsCount) {
-                                resultsCount.textContent = 'Unerwarteter Fehler';
-                            }
-                        }
-                    })
                     .finally(() => {
                         clearTimeout(loadTimeout);
                     });
