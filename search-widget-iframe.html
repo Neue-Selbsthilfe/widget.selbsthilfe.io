@@ -334,8 +334,8 @@
         <!-- Left Sidebar: State Selection (Desktop) -->
         <div class="state-sidebar">
             <h2>Bundesländer</h2>
-            <ul class="state-list" id="stateList">
-                <li class="state-item active" data-state="">Alle Bundesländer</li>
+            <ul class="state-list" id="stateList" role="listbox" aria-label="Bundesland auswählen">
+                <li class="state-item active" data-state="" role="option" aria-selected="true">Alle Bundesländer</li>
             </ul>
         </div>
         
@@ -348,7 +348,7 @@
             
             <div class="search-box">
                 <!-- State dropdown for mobile (above search) -->
-                <select class="state-dropdown-mobile" id="stateDropdownMobile">
+                <select class="state-dropdown-mobile" id="stateDropdownMobile" aria-label="Bundesland auswählen">
                     <option value="">Alle Bundesländer</option>
                 </select>
                 
@@ -362,7 +362,7 @@
                         aria-label="PLZ oder Ort suchen"
                     >
                     <!-- State dropdown for desktop (next to search) -->
-                    <select class="state-dropdown-desktop" id="stateDropdownDesktop">
+                    <select class="state-dropdown-desktop" id="stateDropdownDesktop" aria-label="Bundesland auswählen">
                         <option value="">Alle Bundesländer</option>
                     </select>
                     <button class="geolocation-btn" id="geolocationBtn" title="Standort verwenden" aria-label="Standort verwenden">
@@ -443,7 +443,8 @@
             return distance;
         }
         
-        // Get user's geolocation
+        // Get user's geolocation when button is clicked
+        // Uses higher accuracy and longer timeout since user explicitly requested location
         function getUserLocation() {
             const btn = document.getElementById('geolocationBtn');
             const info = document.getElementById('geolocationInfo');
@@ -488,9 +489,9 @@
                     console.error('Geolocation error:', error);
                 },
                 {
-                    timeout: 15000,
-                    enableHighAccuracy: true,
-                    maximumAge: 300000
+                    timeout: 15000,           // 15s timeout - allow more time for accurate positioning
+                    enableHighAccuracy: true, // High accuracy - user expects precise results
+                    maximumAge: 300000        // Cache position for 5 minutes
                 }
             );
         }
@@ -511,7 +512,8 @@
                 filteredAddresses = [...allAddresses];
                 displayResults();
                 
-                // Try to get user location automatically
+                // Try to get user location automatically on page load
+                // Uses lower accuracy and shorter timeout for non-intrusive background positioning
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(
                         (position) => {
@@ -525,11 +527,11 @@
                             filterResults();
                         },
                         () => {
-                            // Silent fail on automatic geolocation
+                            // Silent fail on automatic geolocation - don't interrupt user experience
                         },
                         {
-                            timeout: 10000,
-                            enableHighAccuracy: false
+                            timeout: 10000,           // 10s timeout - faster for background operation
+                            enableHighAccuracy: false // Low accuracy - faster, less battery drain
                         }
                     );
                 }
@@ -558,6 +560,8 @@
                 li.className = 'state-item';
                 li.textContent = state;
                 li.dataset.state = state;
+                li.setAttribute('role', 'option');
+                li.setAttribute('aria-selected', 'false');
                 li.addEventListener('click', () => selectState(state));
                 stateList.appendChild(li);
                 
@@ -579,11 +583,13 @@
         function selectState(state) {
             currentState = state;
             
-            // Update sidebar active state
+            // Update sidebar active state and ARIA attributes
             document.querySelectorAll('.state-item').forEach(item => {
                 item.classList.remove('active');
+                item.setAttribute('aria-selected', 'false');
                 if (item.dataset.state === state) {
                     item.classList.add('active');
+                    item.setAttribute('aria-selected', 'true');
                 }
             });
             
