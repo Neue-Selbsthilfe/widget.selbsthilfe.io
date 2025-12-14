@@ -71,9 +71,9 @@ Apply `escapeHtml()` to:
 
 All data files are in `data/` directory:
 - `addresses.json` - Array of contact points with fields: id, name, street, address, city, postalCode, state, lat, lng, phone, contact, mail, url, description
-  - Note: `postalCode` is often empty and derived from zip_ids if needed
-  - `address` is a duplicate of `street` for compatibility
-  - `contact` and `mail` both contain the email address
+  - Note: `address` and `street` contain the same value (street address)
+  - Note: `contact` and `mail` contain the same value (email address)
+  - These duplications exist for compatibility with different naming conventions
 - `states.json` - Array of German states (Bundesländer)
 - `postal-codes.json` - Array of postal codes with cities
 
