@@ -156,7 +156,7 @@ jobs:
                 rm -f "$OUTFILE"
                 break
               fi
-              COUNT=$(jq 'length' "$OUTFILE")
+              COUNT=$(jq '.data | length' "$OUTFILE")
               if [ "$COUNT" -eq 0 ]; then
                 rm -f "$OUTFILE"
                 break
@@ -171,7 +171,7 @@ jobs:
             
             # Merge all pages into one file
             echo "Merging fetched pages..."
-            jq -s 'add' data/addresses-raw-page*.json > data/addresses-raw.json
+            jq -s '{data: [.[].data] | add}' data/addresses-raw-page*.json > data/addresses-raw.json
             
             # Transform the data
             if node transform-data.js kontaktstelle data/addresses-raw.json data/addresses.json; then

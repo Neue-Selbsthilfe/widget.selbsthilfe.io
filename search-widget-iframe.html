@@ -240,9 +240,10 @@
                 displayResults();
             } catch (error) {
                 console.error('Error loading data:', error);
+                const errorMessage = error.message || 'Unbekannter Fehler';
                 document.getElementById('resultsContent').innerHTML = 
-                    '<div class="no-results">Fehler beim Laden der Daten. Bitte versuchen Sie es später erneut.</div>';
-                document.getElementById('resultsCount').textContent = 'Fehler';
+                    `<div class="no-results">Fehler beim Laden der Daten: ${escapeHtml(errorMessage)}<br>Bitte versuchen Sie es später erneut.</div>`;
+                document.getElementById('resultsCount').textContent = 'Fehler beim Laden';
             }
         }
         
@@ -363,12 +364,11 @@
         // Event listeners
         document.getElementById('searchInput').addEventListener('input', filterResults);
         document.getElementById('stateFilter').addEventListener('change', () => {
-            // When state changes, update available cities
-            const stateFilter = document.getElementById('stateFilter').value;
-            const baseFiltered = allAddresses.filter(addr => !stateFilter || addr.state === stateFilter);
-            filteredAddresses = baseFiltered;
-            updateCityFilter();
+            // Reset city filter when state changes
+            document.getElementById('cityFilter').value = '';
+            // Update city filter options and re-filter results
             filterResults();
+            updateCityFilter();
         });
         document.getElementById('cityFilter').addEventListener('change', filterResults);
         
