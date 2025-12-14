@@ -70,15 +70,22 @@ Apply `escapeHtml()` to:
 ### Data Files
 
 All data files are in `data/` directory:
-- `addresses.json` - Array of contact points with fields: id, name, street, city, postalCode, state, lat, lng, phone, mail, url
-- `states.json` - Array of German states
+- `addresses.json` - Array of contact points with fields: id, name, street, address, city, postalCode, state, lat, lng, phone, contact, mail, url, description
+  - Note: `postalCode` is often empty and derived from zip_ids if needed
+  - `address` is a duplicate of `street` for compatibility
+  - `contact` and `mail` both contain the email address
+- `states.json` - Array of German states (Bundesländer)
 - `postal-codes.json` - Array of postal codes with cities
 
 ### Data Updates
 
 Data is automatically updated via `.github/workflows/fetch-data.yml`:
-- Runs daily at 2:00 AM UTC
-- Fetches from selbsthilfe-labor.de API using `API_TOKEN` secret
+- Runs daily at 2:00 AM UTC (cron: `0 2 * * *`)
+- Fetches from three selbsthilfe-labor.de API endpoints:
+  - `/rest/sh/kontaktstelle/1.0.0/` - Contact points (paginated, all pages fetched)
+  - `/rest/sh/zip/1.0.0/` - Postal codes (first 100 items)
+  - `/rest/sh/state/1.0.0/` - States (all ~16 German Bundesländer)
+- Uses `API_TOKEN` secret for authentication
 - Transforms JSON:API format to simplified format
 - Validates JSON before committing
 - Commits changes directly to main branch
@@ -95,9 +102,10 @@ Data is automatically updated via `.github/workflows/fetch-data.yml`:
 ### Fetch API Data
 
 `.github/workflows/fetch-data.yml`:
-- Scheduled daily at 2 AM UTC
+- Scheduled daily at 2:00 AM UTC (cron: `0 2 * * *`)
 - Manual trigger available via workflow_dispatch
 - Requires `API_TOKEN` secret for API access
+- Fetches from multiple API endpoints (kontaktstelle, zip, state)
 - Inline Node.js script for data transformation
 
 ## Development Guidelines
