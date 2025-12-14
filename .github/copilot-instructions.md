@@ -20,7 +20,7 @@ This is a self-help contact point search widget for Germany, built as a static w
 - Search by name, city, or postal code
 - Filter by state (Bundesland) and city
 - Responsive design (desktop and mobile)
-- Geolocation support with distance calculation
+- Geolocation support with distance calculation _(planned feature)_
 - XSS protection via HTML escaping
 
 ## Coding Conventions
