@@ -17,6 +17,7 @@ Thumbs.db
 # Node modules (if needed in the future)
 node_modules/
 package-lock.json
+package.json
 
 # Build artifacts
 dist/

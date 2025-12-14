@@ -5,6 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Selbsthilfe-Kontaktstellen Widget</title>
     <style>
+        /* Lexend Font - Local Font Face Declarations */
+        @font-face {
+            font-family: 'Lexend';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url('fonts/lexend-latin-400-normal.woff2') format('woff2'),
+                 url('fonts/lexend-latin-400-normal.woff') format('woff');
+        }
+        
+        @font-face {
+            font-family: 'Lexend';
+            font-style: normal;
+            font-weight: 500;
+            font-display: swap;
+            src: url('fonts/lexend-latin-500-normal.woff2') format('woff2'),
+                 url('fonts/lexend-latin-500-normal.woff') format('woff');
+        }
+        
+        @font-face {
+            font-family: 'Lexend';
+            font-style: normal;
+            font-weight: 600;
+            font-display: swap;
+            src: url('fonts/lexend-latin-600-normal.woff2') format('woff2'),
+                 url('fonts/lexend-latin-600-normal.woff') format('woff');
+        }
+        
+        @font-face {
+            font-family: 'Lexend';
+            font-style: normal;
+            font-weight: 700;
+            font-display: swap;
+            src: url('fonts/lexend-latin-700-normal.woff2') format('woff2'),
+                 url('fonts/lexend-latin-700-normal.woff') format('woff');
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,7 +49,7 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background-color: #f9f9f9;
             overflow-x: hidden;
         }
@@ -59,8 +96,8 @@
         }
         
         .state-item.active {
-            background-color: #e3f2fd;
-            color: #1976d2;
+            background-color: #e6f2f8;
+            color: #005fa4;
             font-weight: 600;
         }
         
@@ -127,7 +164,7 @@
         }
         
         .search-input:focus {
-            border-color: #2196F3;
+            border-color: #005fa4;
         }
         
         /* State dropdown for desktop (next to search) */
@@ -145,7 +182,7 @@
         
         .geolocation-btn {
             padding: 12px 15px;
-            background-color: #4CAF50;
+            background-color: #d21e28;
             color: white;
             border: none;
             border-radius: 6px;
@@ -156,7 +193,7 @@
         }
         
         .geolocation-btn:hover {
-            background-color: #45a049;
+            background-color: #a81820;
         }
         
         .geolocation-btn:disabled {
@@ -188,7 +225,7 @@
         
         .geolocation-info {
             font-size: 12px;
-            color: #4CAF50;
+            color: #d21e28;
             font-style: italic;
         }
         
@@ -224,7 +261,7 @@
         }
         
         .result-link {
-            color: #2196F3;
+            color: #005fa4;
             text-decoration: none;
             font-size: 14px;
             white-space: nowrap;
@@ -247,7 +284,7 @@
         
         .result-distance {
             font-size: 12px;
-            color: #4CAF50;
+            color: #d21e28;
             margin-top: 5px;
             font-weight: 500;
         }
@@ -451,7 +488,7 @@
             
             if (!navigator.geolocation) {
                 info.textContent = 'Geolokation wird nicht unterstützt';
-                info.style.color = '#f44336';
+                info.style.color = '#d21e28';
                 return;
             }
             
@@ -470,7 +507,7 @@
                     btn.disabled = false;
                     btn.textContent = '📍 Standort';
                     info.textContent = 'Standort ermittelt - Ergebnisse nach Entfernung sortiert';
-                    info.style.color = '#4CAF50';
+                    info.style.color = '#d21e28';
                     
                     // Sort results by distance
                     filterResults();
@@ -485,7 +522,7 @@
                         errorMsg = 'Zeitüberschreitung bei Standortermittlung';
                     }
                     info.textContent = errorMsg;
-                    info.style.color = '#f44336';
+                    info.style.color = '#d21e28';
                     console.error('Geolocation error:', error);
                 },
                 {
@@ -523,7 +560,7 @@
                             };
                             document.getElementById('geolocationInfo').textContent = 
                                 'Standort ermittelt - Ergebnisse nach Entfernung sortiert';
-                            document.getElementById('geolocationInfo').style.color = '#4CAF50';
+                            document.getElementById('geolocationInfo').style.color = '#d21e28';
                             filterResults();
                         },
                         () => {
