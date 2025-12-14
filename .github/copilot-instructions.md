@@ -58,12 +58,13 @@ Apply `escapeHtml()` to:
 - Breakpoint: `768px`
 - Use media queries for layout adjustments
 
-### Geolocation
+### Geolocation (Planned/Future Functionality)
 
+_The following geolocation features are planned for future implementation and are not currently present in the codebase:_
 - Automatic geolocation on page load (with user permission)
 - Manual geolocation button
 - Distance calculation using Haversine formula
-- Sort results by distance when location is available
+- Sorting results by distance when location is available
 
 ## Data Management
 
