@@ -27,7 +27,7 @@ This is a self-help contact point search widget for Germany, built as a static w
 
 ### Language and Style
 
-- **Primary language**: German for UI text, comments, and variable names where appropriate
+- **Primary language**: German for UI text and variable names where appropriate; code comments are written in English
 - **HTML/CSS**: Standard conventions, use semantic HTML5
 - **JavaScript**: Vanilla JS (ES6+), no frameworks or build tools
 - **Naming**: Use camelCase for JavaScript variables and functions
