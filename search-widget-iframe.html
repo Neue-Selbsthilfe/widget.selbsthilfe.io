@@ -359,6 +359,7 @@
                         id="searchInput" 
                         placeholder="PLZ oder Ort eingeben..."
                         autocomplete="off"
+                        aria-label="PLZ oder Ort suchen"
                     >
                     <!-- State dropdown for desktop (next to search) -->
                     <select class="state-dropdown-desktop" id="stateDropdownDesktop">
@@ -665,12 +666,12 @@
                     html += `<div class="result-region">${escapeHtml(region)}</div>`;
                     
                     if (addr.url) {
-                        html += `<a href="${escapeHtml(addr.url)}" target="_blank" rel="noopener noreferrer" class="result-link">${escapeHtml(addr.url)}</a>`;
+                        html += `<a href="${escapeHtml(addr.url)}" target="_blank" rel="noopener noreferrer" class="result-link" aria-label="${escapeHtml(addr.url)} (öffnet in neuem Tab)">${escapeHtml(addr.url)} <span aria-hidden="true" title="Öffnet in neuem Tab" style="font-size:0.9em;vertical-align:middle;">&#8599;</span></a>`;
                     }
                     
                     // Show distance if available
                     if (addr.distance !== undefined && addr.distance !== Infinity) {
-                        html += `<div class="result-distance">📍 ${Math.round(addr.distance)} km entfernt</div>`;
+                        html += `<div class="result-distance"><span class="distance-label">Entfernung:</span> 📍 ${Math.round(addr.distance)} km entfernt</div>`;
                     }
                     
                     // Additional details (collapsible)
