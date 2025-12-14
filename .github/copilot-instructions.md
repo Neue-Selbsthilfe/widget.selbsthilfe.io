@@ -53,11 +53,9 @@ Apply `escapeHtml()` to:
 
 ### Responsive Design
 
-- Desktop layout: Sidebar with state filter + main content area (flexbox)
-- Mobile layout: Stacked layout with dropdown state selector
-- Breakpoint: `768px`
-- Use media queries for layout adjustments
-
+- Current implementation uses flexbox with wrapping to provide basic responsiveness across screen sizes.
+- There are no explicit media queries or breakpoints; layout adapts naturally via flexbox.
+- Explicit mobile/desktop layouts and a `768px` breakpoint using media queries are planned as a future enhancement.
 ### Geolocation (Planned/Future Functionality)
 
 _The following geolocation features are planned for future implementation and are not currently present in the codebase:_
