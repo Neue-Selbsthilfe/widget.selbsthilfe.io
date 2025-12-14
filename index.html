@@ -274,7 +274,7 @@
 &lt;div id="sh-widget-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 9999;"&gt;
   &lt;div style="position: relative; width: 90%; max-width: 1200px; height: 90%; margin: auto; margin-top: 5vh; background: white; border-radius: 8px; overflow: hidden;"&gt;
     &lt;button id="sh-widget-close" style="position: absolute; top: 10px; right: 10px; width: 40px; height: 40px; background-color: rgba(255, 255, 255, 0.9); border: none; border-radius: 50%; font-size: 24px; cursor: pointer; z-index: 10000;"&gt;&amp;times;&lt;/button&gt;
-    &lt;iframe id="sh-widget-iframe" src="https://neue-selbsthilfe.github.io/widget.selbsthilfe.io/search-widget-iframe.html" style="width: 100%; height: 100%; border: none;" title="Selbsthilfe Widget"&gt;&lt;/iframe&gt;
+    &lt;iframe id="sh-widget-iframe" src="https://neue-selbsthilfe.github.io/widget.selbsthilfe.io/search-widget-iframe.html" style="width: 100%; height: 100%; border: none;" title="Selbsthilfe Widget" sandbox="allow-scripts allow-same-origin"&gt;&lt;/iframe&gt;
   &lt;/div&gt;
 &lt;/div&gt;
 
@@ -308,7 +308,8 @@
   width="100%" 
   height="800" 
   style="border: 1px solid #ddd; border-radius: 8px;"
-  title="Selbsthilfe-Kontaktstellen Widget"&gt;
+  title="Selbsthilfe-Kontaktstellen Widget"
+  sandbox="allow-scripts allow-same-origin"&gt;
 &lt;/iframe&gt;</code>
         </div>
         
@@ -326,7 +327,7 @@
     <div id="widgetOverlay" class="overlay" onclick="closeWidget(event)">
         <div class="overlay-content" onclick="event.stopPropagation()">
             <button class="close-btn" onclick="closeWidget()" aria-label="Schließen">&times;</button>
-            <iframe id="widgetIframe" class="widget-iframe" src="" title="Selbsthilfe Widget"></iframe>
+            <iframe id="widgetIframe" class="widget-iframe" src="" title="Selbsthilfe Widget" sandbox="allow-scripts allow-same-origin"></iframe>
         </div>
     </div>
     
@@ -376,22 +377,46 @@
         function copyCode(elementId) {
             const codeElement = document.getElementById(elementId);
             const button = event.target;
+            const textToCopy = codeElement.textContent;
             
-            // Create a temporary textarea to copy from
+            // Try modern Clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(textToCopy)
+                    .then(() => {
+                        // Visual feedback
+                        const originalText = button.textContent;
+                        button.textContent = 'Kopiert!';
+                        button.classList.add('copied');
+                        
+                        setTimeout(() => {
+                            button.textContent = originalText;
+                            button.classList.remove('copied');
+                        }, 2000);
+                    })
+                    .catch(err => {
+                        console.error('Failed to copy with Clipboard API:', err);
+                        fallbackCopy(textToCopy, button);
+                    });
+            } else {
+                // Fallback for older browsers
+                fallbackCopy(textToCopy, button);
+            }
+        }
+        
+        // Fallback copy method for older browsers
+        function fallbackCopy(text, button) {
             const textarea = document.createElement('textarea');
-            textarea.value = codeElement.textContent;
+            textarea.value = text;
             textarea.style.position = 'fixed';
             textarea.style.opacity = '0';
             document.body.appendChild(textarea);
             
-            // Select and copy
             textarea.select();
-            textarea.setSelectionRange(0, 99999); // For mobile devices
+            textarea.setSelectionRange(0, 99999);
             
             try {
                 document.execCommand('copy');
                 
-                // Visual feedback
                 const originalText = button.textContent;
                 button.textContent = 'Kopiert!';
                 button.classList.add('copied');
@@ -405,7 +430,6 @@
                 alert('Fehler beim Kopieren. Bitte manuell kopieren.');
             }
             
-            // Clean up
             document.body.removeChild(textarea);
         }
     </script>
