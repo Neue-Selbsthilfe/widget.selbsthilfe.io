@@ -587,7 +587,7 @@
                 console.log('Fetch response status:', response.status, response.ok ? 'OK' : 'Failed');
                 
                 if (!response.ok) {
-                    const errorDetails = `HTTP ${response.status}: ${escapeHtml(response.statusText)}`;
+                    const errorDetails = `HTTP ${response.status}: ${response.statusText}`;
                     console.error('Failed to fetch addresses:', errorDetails);
                     throw new Error(`Daten konnten nicht geladen werden (${errorDetails})`);
                 }
