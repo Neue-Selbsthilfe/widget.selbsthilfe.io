@@ -42,7 +42,7 @@ jobs:
                 street: attrs.street || '',
                 address: attrs.street || '',
                 city: attrs.city || '',
-                postalCode: '', // Will be derived from zip_ids if needed
+                postalCode: attrs.zip || attrs.postal_code || '',
                 state: attrs.state || '',
                 lat: attrs.number_lat || 0,
                 lng: attrs.number_lng || 0,
@@ -169,17 +169,23 @@ jobs:
               PAGE=$((PAGE + 1))
             done
             
-            # Merge all pages into one file
-            echo "Merging fetched pages..."
-            jq -s '{data: [.[].data] | add}' data/addresses-raw-page*.json > data/addresses-raw.json
-            
-            # Transform the data
-            if node transform-data.js kontaktstelle data/addresses-raw.json data/addresses.json; then
-              echo "✓ Kontaktstelle data fetched and transformed successfully"
-              echo "success=true" >> "$GITHUB_OUTPUT"
-            else
-              echo "✗ Failed to transform Kontaktstelle data"
+            # Check if any pages were fetched
+            if ! ls data/addresses-raw-page*.json 1> /dev/null 2>&1; then
+              echo "✗ No Kontaktstelle data was fetched from API"
               echo "success=false" >> "$GITHUB_OUTPUT"
+            else
+              # Merge all pages into one file
+              echo "Merging fetched pages (total fetched: $TOTAL_FETCHED)..."
+              jq -s '{data: [.[].data] | add}' data/addresses-raw-page*.json > data/addresses-raw.json
+              
+              # Transform the data
+              if node transform-data.js kontaktstelle data/addresses-raw.json data/addresses.json; then
+                echo "✓ Kontaktstelle data fetched and transformed successfully ($TOTAL_FETCHED addresses)"
+                echo "success=true" >> "$GITHUB_OUTPUT"
+              else
+                echo "✗ Failed to transform Kontaktstelle data"
+                echo "success=false" >> "$GITHUB_OUTPUT"
+              fi
             fi
             rm -f data/addresses-raw-page*.json data/addresses-raw.json
           else
