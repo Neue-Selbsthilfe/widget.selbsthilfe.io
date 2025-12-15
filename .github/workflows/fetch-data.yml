@@ -42,7 +42,7 @@ jobs:
                 street: attrs.street || '',
                 address: attrs.street || '',
                 city: attrs.city || '',
-                postalCode: attrs.zip || attrs.postal_code || attrs.postalCode || '',
+                postalCode: attrs.zip || attrs.postal_code || '',
                 state: attrs.state || '',
                 lat: attrs.number_lat || 0,
                 lng: attrs.number_lng || 0,
