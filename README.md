@@ -56,4 +56,17 @@ Dieses Widget ist Teil der Initiative [Neue Selbsthilfe](https://github.com/Neue
 
 ## Für Entwickler
 
+### Daten manuell aktualisieren
+
+Die Daten werden automatisch täglich um 2:00 Uhr UTC aktualisiert. Falls Sie die Daten manuell aktualisieren möchten:
+
+1. Gehen Sie zu **Actions** im GitHub Repository
+2. Wählen Sie den Workflow **"Fetch API Data"**
+3. Klicken Sie auf **"Run workflow"**
+4. Wählen Sie den Branch `main` und bestätigen Sie
+
+**Hinweis**: Dafür wird ein konfiguriertes `API_TOKEN` Secret benötigt, das den Zugriff auf die selbsthilfe-labor.de API ermöglicht.
+
+### Technische Dokumentation
+
 Technische Dokumentation für Entwickler finden Sie in der Datei [`.github/copilot-instructions.md`](.github/copilot-instructions.md).
