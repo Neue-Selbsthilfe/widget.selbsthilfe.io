@@ -1,37 +1,702 @@
 [
   {
-    "id": 1,
-    "postalCode": "01129",
-    "zip": "01129",
-    "city": "Dresden",
+    "id": 8940,
+    "postalCode": "47551",
+    "zip": "47551",
+    "city": "Bedburg-Hau",
     "coordinates": []
   },
   {
-    "id": 2,
-    "postalCode": "01796",
-    "zip": "01796",
-    "city": "Pirna",
+    "id": 8941,
+    "postalCode": "52477",
+    "zip": "52477",
+    "city": "Alsdorf",
     "coordinates": []
   },
   {
-    "id": 3,
-    "postalCode": "01979",
-    "zip": "01979",
-    "city": "Lauchhammer",
+    "id": 8942,
+    "postalCode": "52159",
+    "zip": "52159",
+    "city": "Roetgen",
     "coordinates": []
   },
   {
-    "id": 4,
-    "postalCode": "10625",
-    "zip": "10625",
-    "city": "Berlin",
+    "id": 8943,
+    "postalCode": "52156",
+    "zip": "52156",
+    "city": "Monschau",
     "coordinates": []
   },
   {
-    "id": 5,
-    "postalCode": "80339",
-    "zip": "80339",
-    "city": "München",
+    "id": 8944,
+    "postalCode": "52152",
+    "zip": "52152",
+    "city": "Simmerath",
+    "coordinates": []
+  },
+  {
+    "id": 8945,
+    "postalCode": "52382",
+    "zip": "52382",
+    "city": "Niederzier",
+    "coordinates": []
+  },
+  {
+    "id": 8946,
+    "postalCode": "54298",
+    "zip": "54298",
+    "city": "Welschbillig, Igel, Aach",
+    "coordinates": []
+  },
+  {
+    "id": 8947,
+    "postalCode": "47506",
+    "zip": "47506",
+    "city": "Neukirchen-Vluyn",
+    "coordinates": []
+  },
+  {
+    "id": 8948,
+    "postalCode": "54647",
+    "zip": "54647",
+    "city": "Dudeldorf",
+    "coordinates": []
+  },
+  {
+    "id": 8949,
+    "postalCode": "54316",
+    "zip": "54316",
+    "city": "Pluwig",
+    "coordinates": []
+  },
+  {
+    "id": 8950,
+    "postalCode": "47139",
+    "zip": "47139",
+    "city": "Duisburg",
+    "coordinates": []
+  },
+  {
+    "id": 8951,
+    "postalCode": "50259",
+    "zip": "50259",
+    "city": "Pulheim",
+    "coordinates": []
+  },
+  {
+    "id": 8952,
+    "postalCode": "40468",
+    "zip": "40468",
+    "city": "Düsseldorf",
+    "coordinates": []
+  },
+  {
+    "id": 8953,
+    "postalCode": "54552",
+    "zip": "54552",
+    "city": "Mehren u.a.",
+    "coordinates": []
+  },
+  {
+    "id": 8954,
+    "postalCode": "40470",
+    "zip": "40470",
+    "city": "Düsseldorf",
+    "coordinates": []
+  },
+  {
+    "id": 8955,
+    "postalCode": "40599",
+    "zip": "40599",
+    "city": "Düsseldorf",
+    "coordinates": []
+  },
+  {
+    "id": 8956,
+    "postalCode": "54413",
+    "zip": "54413",
+    "city": "Gusenburg",
+    "coordinates": []
+  },
+  {
+    "id": 8957,
+    "postalCode": "45475",
+    "zip": "45475",
+    "city": "Mülheim an der Ruhr",
+    "coordinates": []
+  },
+  {
+    "id": 8958,
+    "postalCode": "50739",
+    "zip": "50739",
+    "city": "Köln",
+    "coordinates": []
+  },
+  {
+    "id": 8959,
+    "postalCode": "66636",
+    "zip": "66636",
+    "city": "Tholey",
+    "coordinates": []
+  },
+  {
+    "id": 8960,
+    "postalCode": "66117",
+    "zip": "66117",
+    "city": "Saarbrücken",
+    "coordinates": []
+  },
+  {
+    "id": 8961,
+    "postalCode": "50968",
+    "zip": "50968",
+    "city": "Köln",
+    "coordinates": []
+  },
+  {
+    "id": 8962,
+    "postalCode": "56825",
+    "zip": "56825",
+    "city": "Gevenich",
+    "coordinates": []
+  },
+  {
+    "id": 8963,
+    "postalCode": "53125",
+    "zip": "53125",
+    "city": "Bonn",
+    "coordinates": []
+  },
+  {
+    "id": 8964,
+    "postalCode": "55767",
+    "zip": "55767",
+    "city": "Brücken, Oberbrombach u.a.",
+    "coordinates": []
+  },
+  {
+    "id": 8965,
+    "postalCode": "48720",
+    "zip": "48720",
+    "city": "Rosendahl",
+    "coordinates": []
+  },
+  {
+    "id": 8966,
+    "postalCode": "79822",
+    "zip": "79822",
+    "city": "Titisee-Neustadt",
+    "coordinates": []
+  },
+  {
+    "id": 8967,
+    "postalCode": "35759",
+    "zip": "35759",
+    "city": "Driedorf",
+    "coordinates": []
+  },
+  {
+    "id": 8968,
+    "postalCode": "76437",
+    "zip": "76437",
+    "city": "Rastatt",
+    "coordinates": []
+  },
+  {
+    "id": 8969,
+    "postalCode": "49143",
+    "zip": "49143",
+    "city": "Bissendorf",
+    "coordinates": []
+  },
+  {
+    "id": 8970,
+    "postalCode": "26122",
+    "zip": "26122",
+    "city": "Oldenburg",
+    "coordinates": []
+  },
+  {
+    "id": 8971,
+    "postalCode": "76532",
+    "zip": "76532",
+    "city": "Baden-Baden",
+    "coordinates": []
+  },
+  {
+    "id": 8972,
+    "postalCode": "79790",
+    "zip": "79790",
+    "city": "Küssaberg",
+    "coordinates": []
+  },
+  {
+    "id": 8973,
+    "postalCode": "55252",
+    "zip": "55252",
+    "city": "Mainz-Kastel",
+    "coordinates": []
+  },
+  {
+    "id": 8974,
+    "postalCode": "76764",
+    "zip": "76764",
+    "city": "Rheinzabern",
+    "coordinates": []
+  },
+  {
+    "id": 8975,
+    "postalCode": "35684",
+    "zip": "35684",
+    "city": "Dillenburg",
+    "coordinates": []
+  },
+  {
+    "id": 8976,
+    "postalCode": "76189",
+    "zip": "76189",
+    "city": "Karlsruhe",
+    "coordinates": []
+  },
+  {
+    "id": 8977,
+    "postalCode": "67577",
+    "zip": "67577",
+    "city": "Alsheim",
+    "coordinates": []
+  },
+  {
+    "id": 8978,
+    "postalCode": "26936",
+    "zip": "26936",
+    "city": "Stadland",
+    "coordinates": []
+  },
+  {
+    "id": 8979,
+    "postalCode": "67365",
+    "zip": "67365",
+    "city": "Schwegenheim",
+    "coordinates": []
+  },
+  {
+    "id": 8980,
+    "postalCode": "59557",
+    "zip": "59557",
+    "city": "Lippstadt",
+    "coordinates": []
+  },
+  {
+    "id": 8981,
+    "postalCode": "27801",
+    "zip": "27801",
+    "city": "Dötlingen",
+    "coordinates": []
+  },
+  {
+    "id": 8982,
+    "postalCode": "59602",
+    "zip": "59602",
+    "city": "Rüthen",
+    "coordinates": []
+  },
+  {
+    "id": 8983,
+    "postalCode": "67117",
+    "zip": "67117",
+    "city": "Limburgerhof",
+    "coordinates": []
+  },
+  {
+    "id": 8984,
+    "postalCode": "57614",
+    "zip": "57614",
+    "city": "Steimel",
+    "coordinates": []
+  },
+  {
+    "id": 8985,
+    "postalCode": "56307",
+    "zip": "56307",
+    "city": "Dürrholz",
+    "coordinates": []
+  },
+  {
+    "id": 8986,
+    "postalCode": "66862",
+    "zip": "66862",
+    "city": "Kindsbach",
+    "coordinates": []
+  },
+  {
+    "id": 8987,
+    "postalCode": "55596",
+    "zip": "55596",
+    "city": "Waldböckelheim",
+    "coordinates": []
+  },
+  {
+    "id": 8988,
+    "postalCode": "56337",
+    "zip": "56337",
+    "city": "Eitelborn",
+    "coordinates": []
+  },
+  {
+    "id": 8989,
+    "postalCode": "67732",
+    "zip": "67732",
+    "city": "Hirschhorn",
+    "coordinates": []
+  },
+  {
+    "id": 8990,
+    "postalCode": "56348",
+    "zip": "56348",
+    "city": "Bornich, Patersberg",
+    "coordinates": []
+  },
+  {
+    "id": 8991,
+    "postalCode": "67759",
+    "zip": "67759",
+    "city": "Nußbach",
+    "coordinates": []
+  },
+  {
+    "id": 8992,
+    "postalCode": "79429",
+    "zip": "79429",
+    "city": "Malsburg-Marzell",
+    "coordinates": []
+  },
+  {
+    "id": 8993,
+    "postalCode": "56349",
+    "zip": "56349",
+    "city": "Kaub",
+    "coordinates": []
+  },
+  {
+    "id": 8994,
+    "postalCode": "67697",
+    "zip": "67697",
+    "city": "Otterberg",
+    "coordinates": []
+  },
+  {
+    "id": 8995,
+    "postalCode": "49497",
+    "zip": "49497",
+    "city": "Mettingen",
+    "coordinates": []
+  },
+  {
+    "id": 8996,
+    "postalCode": "56132",
+    "zip": "56132",
+    "city": "Bad Ems Umland",
+    "coordinates": []
+  },
+  {
+    "id": 8997,
+    "postalCode": "65391",
+    "zip": "65391",
+    "city": "Lorch",
+    "coordinates": []
+  },
+  {
+    "id": 8998,
+    "postalCode": "57627",
+    "zip": "57627",
+    "city": "Hachenburg",
+    "coordinates": []
+  },
+  {
+    "id": 8999,
+    "postalCode": "57520",
+    "zip": "57520",
+    "city": "Emmerzhausen, Niederdreisbach, Steinebach",
+    "coordinates": []
+  },
+  {
+    "id": 9000,
+    "postalCode": "49536",
+    "zip": "49536",
+    "city": "Lienen",
+    "coordinates": []
+  },
+  {
+    "id": 9001,
+    "postalCode": "67808",
+    "zip": "67808",
+    "city": "Steinbach, Weitersweiler, Bennhausen, Mörsfeld, Würzweiler, Ruppertsecken u.a.",
+    "coordinates": []
+  },
+  {
+    "id": 9002,
+    "postalCode": "67693",
+    "zip": "67693",
+    "city": "Waldleiningen, Fischbach",
+    "coordinates": []
+  },
+  {
+    "id": 9003,
+    "postalCode": "67728",
+    "zip": "67728",
+    "city": "Münchweiler an der Alsenz",
+    "coordinates": []
+  },
+  {
+    "id": 9004,
+    "postalCode": "59469",
+    "zip": "59469",
+    "city": "Ense",
+    "coordinates": []
+  },
+  {
+    "id": 9005,
+    "postalCode": "57520",
+    "zip": "57520",
+    "city": "Emmerzhausen, Niederdreisbach, Steinebach",
+    "coordinates": []
+  },
+  {
+    "id": 9006,
+    "postalCode": "65582",
+    "zip": "65582",
+    "city": "Diez, Hambach, Aull",
+    "coordinates": []
+  },
+  {
+    "id": 9007,
+    "postalCode": "65626",
+    "zip": "65626",
+    "city": "Birlenbach",
+    "coordinates": []
+  },
+  {
+    "id": 9008,
+    "postalCode": "67468",
+    "zip": "67468",
+    "city": "Frankenstein, Neidenfels, Frankeneck",
+    "coordinates": []
+  },
+  {
+    "id": 9009,
+    "postalCode": "55578",
+    "zip": "55578",
+    "city": "Wallertheim",
+    "coordinates": []
+  },
+  {
+    "id": 9010,
+    "postalCode": "59519",
+    "zip": "59519",
+    "city": "Möhnesee",
+    "coordinates": []
+  },
+  {
+    "id": 9011,
+    "postalCode": "59823",
+    "zip": "59823",
+    "city": "Arnsberg",
+    "coordinates": []
+  },
+  {
+    "id": 9012,
+    "postalCode": "57234",
+    "zip": "57234",
+    "city": "Wilnsdorf",
+    "coordinates": []
+  },
+  {
+    "id": 9013,
+    "postalCode": "67308",
+    "zip": "67308",
+    "city": "Albisheim (Pfrimm)",
+    "coordinates": []
+  },
+  {
+    "id": 9014,
+    "postalCode": "77787",
+    "zip": "77787",
+    "city": "Nordrach",
+    "coordinates": []
+  },
+  {
+    "id": 9015,
+    "postalCode": "67157",
+    "zip": "67157",
+    "city": "Wachenheim an der Weinstraße",
+    "coordinates": []
+  },
+  {
+    "id": 9016,
+    "postalCode": "26903",
+    "zip": "26903",
+    "city": "Surwold",
+    "coordinates": []
+  },
+  {
+    "id": 9017,
+    "postalCode": "26465",
+    "zip": "26465",
+    "city": "Langeoog",
+    "coordinates": []
+  },
+  {
+    "id": 9018,
+    "postalCode": "66504",
+    "zip": "66504",
+    "city": "Bottenbach",
+    "coordinates": []
+  },
+  {
+    "id": 9019,
+    "postalCode": "56323",
+    "zip": "56323",
+    "city": "Waldesch, Hünenfeld",
+    "coordinates": []
+  },
+  {
+    "id": 9020,
+    "postalCode": "58515",
+    "zip": "58515",
+    "city": "Lüdenscheid",
+    "coordinates": []
+  },
+  {
+    "id": 9021,
+    "postalCode": "48159",
+    "zip": "48159",
+    "city": "Münster",
+    "coordinates": []
+  },
+  {
+    "id": 9022,
+    "postalCode": "56743",
+    "zip": "56743",
+    "city": "Mendig",
+    "coordinates": []
+  },
+  {
+    "id": 9023,
+    "postalCode": "55776",
+    "zip": "55776",
+    "city": "Berglangenbach, Ruschberg u.a.",
+    "coordinates": []
+  },
+  {
+    "id": 9024,
+    "postalCode": "55483",
+    "zip": "55483",
+    "city": "Dickenschied u.a.",
+    "coordinates": []
+  },
+  {
+    "id": 9025,
+    "postalCode": "56751",
+    "zip": "56751",
+    "city": "Polch",
+    "coordinates": []
+  },
+  {
+    "id": 9026,
+    "postalCode": "24783",
+    "zip": "24783",
+    "city": "Osterrönfeld",
+    "coordinates": []
+  },
+  {
+    "id": 9027,
+    "postalCode": "73054",
+    "zip": "73054",
+    "city": "Eislingen/Fils",
+    "coordinates": []
+  },
+  {
+    "id": 9028,
+    "postalCode": "73113",
+    "zip": "73113",
+    "city": "Ottenbach",
+    "coordinates": []
+  },
+  {
+    "id": 9029,
+    "postalCode": "36277",
+    "zip": "36277",
+    "city": "Schenklengsfeld",
+    "coordinates": []
+  },
+  {
+    "id": 9030,
+    "postalCode": "88471",
+    "zip": "88471",
+    "city": "Laupheim",
+    "coordinates": []
+  },
+  {
+    "id": 9031,
+    "postalCode": "37120",
+    "zip": "37120",
+    "city": "Bovenden",
+    "coordinates": []
+  },
+  {
+    "id": 9032,
+    "postalCode": "30629",
+    "zip": "30629",
+    "city": "Hannover",
+    "coordinates": []
+  },
+  {
+    "id": 9033,
+    "postalCode": "29649",
+    "zip": "29649",
+    "city": "Wietzendorf",
+    "coordinates": []
+  },
+  {
+    "id": 9034,
+    "postalCode": "88260",
+    "zip": "88260",
+    "city": "Argenbühl",
+    "coordinates": []
+  },
+  {
+    "id": 9035,
+    "postalCode": "31137",
+    "zip": "31137",
+    "city": "Hildesheim",
+    "coordinates": []
+  },
+  {
+    "id": 9036,
+    "postalCode": "24399",
+    "zip": "24399",
+    "city": "Arnis, Marienhof",
+    "coordinates": []
+  },
+  {
+    "id": 9037,
+    "postalCode": "73566",
+    "zip": "73566",
+    "city": "Bartholomä",
+    "coordinates": []
+  },
+  {
+    "id": 9038,
+    "postalCode": "37075",
+    "zip": "37075",
+    "city": "Göttingen",
+    "coordinates": []
+  },
+  {
+    "id": 9039,
+    "postalCode": "97657",
+    "zip": "97657",
+    "city": "Sandberg",
     "coordinates": []
   }
 ]
