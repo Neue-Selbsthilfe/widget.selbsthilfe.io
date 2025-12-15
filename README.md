@@ -20,7 +20,7 @@ Dort können Sie:
 
 ### Auf Ihrer eigenen Webseite einbinden
 
-Betreiben Sie eine Webseite für Selbsthilfe, Gesundheit oder soziale Dienste? Sie können das Widget kostenlos auf Ihrer eigenen Webseite einbinden! 
+Betreiben Sie eine Webseite für Selbsthilfe, Gesundheit oder soziale Dienste? Sie können das Widget kostenlos auf Ihrer eigenen Webseite einbinden!
 
 Besuchen Sie [widget.selbsthilfe.io](https://widget.selbsthilfe.io) und folgen Sie der Anleitung unter "Widget auf eigener Webseite einbinden". Mit nur wenigen Zeilen Code können Sie Ihren Besuchern den Zugang zu allen Selbsthilfe-Kontaktstellen in Deutschland ermöglichen.
 
