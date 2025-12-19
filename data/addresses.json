@@ -1,5 +1,21 @@
 [
   {
+    "id": 65,
+    "name": "Selbsthilfekontaktstelle Rastatt/Baden-Baden",
+    "street": "Flugstraße 7",
+    "address": "Flugstraße 7",
+    "city": "Baden-Baden",
+    "postalCode": "",
+    "state": "Baden-Württemberg",
+    "lat": 0,
+    "lng": 0,
+    "phone": "072 22 / 381-23 76",
+    "contact": "selbsthilfe@landkreis-rastatt.de",
+    "mail": "selbsthilfe@landkreis-rastatt.de",
+    "url": "https://www.landkreis-rastatt.de/landratsamt/aemteruebersicht/gesundheitsamt/beratungs-hilfsangebote/kontakt-informationsstelle-selbsthilfe",
+    "description": "Selbsthilfekontaktstelle Rastatt/Baden-Baden"
+  },
+  {
     "id": 294,
     "name": "Kontakt- und Informationsstelle für Selbsthilfegruppen",
     "street": "Industriestraße 21-21a",
@@ -4480,22 +4496,6 @@
     "description": "SEKiS Baden-Württemberg"
   },
   {
-    "id": 92,
-    "name": "Selbsthilfekontaktstelle KISS Stuttgart",
-    "street": "Tübinger Straße 15",
-    "address": "Tübinger Straße 15",
-    "city": "Stuttgart",
-    "postalCode": "",
-    "state": "Baden-Württemberg",
-    "lat": 0,
-    "lng": 0,
-    "phone": "07 11 / 640 61 17",
-    "contact": "info@kiss-stuttgart.de",
-    "mail": "info@kiss-stuttgart.de",
-    "url": "https://www.kiss-stuttgart.de",
-    "description": "Selbsthilfekontaktstelle KISS Stuttgart"
-  },
-  {
     "id": 68,
     "name": "Kontaktbüro Selbsthilfegruppen, Gesundheitsamt",
     "street": "Dornierstraße 3",
@@ -4542,22 +4542,6 @@
     "mail": "selbsthilfekontaktstelle.ludwigsburg@bw.aok.de",
     "url": "",
     "description": "AOK Ludwigsburg-Rems-Murr"
-  },
-  {
-    "id": 93,
-    "name": "SOZIALFORUM TÜBINGEN e.V.",
-    "street": "Europaplatz 3",
-    "address": "Europaplatz 3",
-    "city": "Tübingen",
-    "postalCode": "",
-    "state": "Baden-Württemberg",
-    "lat": 0,
-    "lng": 0,
-    "phone": "070 71 / 383 63",
-    "contact": "",
-    "mail": "",
-    "url": "https://www.sozialforum-tuebingen.de/cms--selbsthilfe-/",
-    "description": "SOZIALFORUM TÜBINGEN e.V."
   },
   {
     "id": 66,
@@ -4736,22 +4720,6 @@
     "description": "Selbsthilfebüro Karlsruhe"
   },
   {
-    "id": 65,
-    "name": "Kontakt- und Informationsstelle für Selbsthilfe Gesundheitsamt Rastatt",
-    "street": "Flugstraße 7",
-    "address": "Flugstraße 7",
-    "city": "Baden-Baden",
-    "postalCode": "",
-    "state": "Baden-Württemberg",
-    "lat": 0,
-    "lng": 0,
-    "phone": "072 22 / 381-23 76",
-    "contact": "selbsthilfe@landkreis-rastatt.de",
-    "mail": "selbsthilfe@landkreis-rastatt.de",
-    "url": "https://www.landkreis-rastatt.de/landratsamt/aemteruebersicht/gesundheitsamt/beratungs-hilfsangebote/kontakt-informationsstelle-selbsthilfe",
-    "description": "Kontakt- und Informationsstelle für Selbsthilfe Gesundheitsamt Rastatt"
-  },
-  {
     "id": 83,
     "name": "Kontaktstelle für Selbsthilfegruppen des Landratsamtes Ortenaukreis",
     "street": "Lange Straße 51",
@@ -4798,22 +4766,6 @@
     "mail": "info@selbsthilfe-kommit.de",
     "url": "https://kom-mit.de/",
     "description": "Selbsthilfekontaktstelle Kommit im Landkreis Konstanz"
-  },
-  {
-    "id": 94,
-    "name": "Selbsthilfekontaktstelle c/o Landratsamt Tuttlingen",
-    "street": "Gartenstraße 22",
-    "address": "Gartenstraße 22",
-    "city": "Tuttlingen",
-    "postalCode": "",
-    "state": "Baden-Württemberg",
-    "lat": 0,
-    "lng": 0,
-    "phone": "074 61 / 926 46 04",
-    "contact": "",
-    "mail": "",
-    "url": "https://fps.landkreis-tuttlingen.de/Selbsthilfekontaktstelle",
-    "description": "Selbsthilfekontaktstelle c/o Landratsamt Tuttlingen"
   },
   {
     "id": 88,
@@ -5774,5 +5726,53 @@
     "mail": "info@shz-muenchen.de",
     "url": "https://www.shz-muenchen.de",
     "description": "Selbsthilfezentrum München"
+  },
+  {
+    "id": 92,
+    "name": "Selbsthilfezentrum KISS Stuttgart",
+    "street": "Tübinger Straße 15",
+    "address": "Tübinger Straße 15",
+    "city": "Stuttgart",
+    "postalCode": "",
+    "state": "Baden-Württemberg",
+    "lat": 0,
+    "lng": 0,
+    "phone": "07 11 / 640 61 17",
+    "contact": "info@kiss-stuttgart.de",
+    "mail": "info@kiss-stuttgart.de",
+    "url": "https://www.kiss-stuttgart.de",
+    "description": "Selbsthilfezentrum KISS Stuttgart"
+  },
+  {
+    "id": 93,
+    "name": "SOZIALFORUM TÜBINGEN e.V.",
+    "street": "Europaplatz 3",
+    "address": "Europaplatz 3",
+    "city": "Tübingen",
+    "postalCode": "",
+    "state": "Baden-Württemberg",
+    "lat": 0,
+    "lng": 0,
+    "phone": "070 71 / 383 63",
+    "contact": "selbsthilfe@sozialforum-tuebingen.de",
+    "mail": "selbsthilfe@sozialforum-tuebingen.de",
+    "url": "https://www.sozialforum-tuebingen.de/cms--selbsthilfe-/",
+    "description": "SOZIALFORUM TÜBINGEN e.V."
+  },
+  {
+    "id": 94,
+    "name": "Selbsthilfekontaktstelle c/o Landratsamt Tuttlingen",
+    "street": "Gartenstraße 22",
+    "address": "Gartenstraße 22",
+    "city": "Tuttlingen",
+    "postalCode": "",
+    "state": "Baden-Württemberg",
+    "lat": 0,
+    "lng": 0,
+    "phone": "074 61 / 926 46 04",
+    "contact": "selbsthilfekontaktstelle@landkreis-tuttlingen.de",
+    "mail": "selbsthilfekontaktstelle@landkreis-tuttlingen.de",
+    "url": "https://fps.landkreis-tuttlingen.de/Selbsthilfekontaktstelle",
+    "description": "Selbsthilfekontaktstelle c/o Landratsamt Tuttlingen"
   }
 ]
